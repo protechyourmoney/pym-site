@@ -235,6 +235,15 @@
   .lang-toggle{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:12px}
   .lang-toggle button{background:none;border:0;color:var(--muted);padding:6px 12px;cursor:pointer}
   .lang-toggle button.active{background:var(--gold);color:#0d1117;font-weight:700}
+  #pnews{display:block}
+  .ptl{position:relative;border-left:2px solid var(--line);margin:4px 0 0 10px;padding-left:26px;display:flex;flex-direction:column;gap:24px}
+  .ptl-item{position:relative}
+  .ptl-dot{position:absolute;left:-34px;top:3px;width:13px;height:13px;border-radius:50%;box-shadow:0 0 0 4px var(--bg)}
+  .ptl-date{font-size:12px;font-weight:800;letter-spacing:.5px;color:var(--muted)}
+  .ptl-t{display:inline-block;margin:5px 0 6px;font-size:16px;font-weight:700;line-height:1.45;color:var(--text)}
+  .ptl-t:hover{color:var(--gold)}
+  .ptl-sum{margin:0 0 8px;color:var(--muted);font-size:13.5px;line-height:1.7}
+  .ptl-src{color:#6b7789;font-size:12px}
 </style>
 </head>
 <body>
@@ -710,16 +719,18 @@ function riskThumb(n){
     <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${v.i}</svg>
   </div>`;
 }
-document.getElementById('pnews').innerHTML = PYMNEWS.map(n=>`
-  <a class="item" href="${n.url}" target="_blank" rel="noopener">
-    ${riskThumb(n.risk)}
-    <div class="pcontent">
-      <span class="rtag">風險 ${n.risk} · ${n.tag}</span><span class="rt2">${n.date}</span>
-      <h3>${n.title}</h3>
-      <p class="sum">${n.summary}</p>
-      <div class="src">來源：${n.source}</div>
-    </div>
-  </a>`).join('');
+(function(){
+  const sorted = PYMNEWS.slice().sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+  const dotColor = r => (RISK_VIS[r]||{}).c || '#e3b341';
+  document.getElementById('pnews').innerHTML = '<div class="ptl">' + sorted.map(n=>`
+    <div class="ptl-item">
+      <span class="ptl-dot" style="background:${dotColor(n.risk)}"></span>
+      <div class="ptl-date">${n.date} · 風險 ${n.risk} · ${n.tag}</div>
+      <a class="ptl-t" href="${n.url}" target="_blank" rel="noopener">${n.title}</a>
+      <p class="ptl-sum">${n.summary}</p>
+      <div class="ptl-src">來源：${n.source}</div>
+    </div>`).join('') + '</div>';
+})();
 
 // ---- PYM shows ----
 function showLinks(links){
