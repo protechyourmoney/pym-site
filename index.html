@@ -534,6 +534,25 @@ const TOOLS = [
   </div>
 </section>
 
+<!-- FEATURED LATEST VIDEOS -->
+<section class="block" id="featured" style="border-top:0;padding-top:6px">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2><span class="kicker">📺 最新一集</span>YouTube 最新影片</h2>
+    </div>
+    <div class="grid g2">
+      <div>
+        <div class="chan-title" id="ytf-name-1"></div>
+        <div class="yt-embed"><iframe id="ytf-1" allowfullscreen loading="lazy"></iframe></div>
+      </div>
+      <div>
+        <div class="chan-title" id="ytf-name-2"></div>
+        <div class="yt-embed"><iframe id="ytf-2" allowfullscreen loading="lazy"></iframe></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- LATEST PYM NEWS -->
 <section class="block" id="news" style="border-top:0;padding-top:8px">
   <div class="wrap">
@@ -894,6 +913,10 @@ function initYT(slot, chan){
   document.getElementById('yt-'+slot).src = 'https://www.youtube.com/embed/videoseries?list=' + uploadsId(chan.id);
 }
 initYT(1, CONFIG.youtube.ccnews);
+document.getElementById('ytf-name-1').textContent = CONFIG.youtube.ccnews.name;
+document.getElementById('ytf-1').src = 'https://www.youtube.com/embed/videoseries?list=' + uploadsId(CONFIG.youtube.ccnews.id);
+document.getElementById('ytf-name-2').textContent = CONFIG.youtube.wealthbb.name;
+document.getElementById('ytf-2').src = 'https://www.youtube.com/embed/videoseries?list=' + uploadsId(CONFIG.youtube.wealthbb.id);
 initYT(2, CONFIG.youtube.wealthbb);
 
 // ---- RSS helper: fetch raw feed via CORS proxy, parse XML ----
