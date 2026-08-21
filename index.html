@@ -272,7 +272,8 @@ const RISKS = [
   {n:4, t:"貨幣風險", en:"Currency", d:"匯率與聯繫匯率變動。"},
   {n:5, t:"政治／政策風險", en:"Policy", d:"打擊跨境資金等政策。"},
   {n:6, t:"地緣・中美風險", en:"Geopolitical", d:"金融戰、二級制裁。"},
-  {n:7, t:"中國因素", en:"China", d:"經濟、通縮、政局。"}
+  {n:7, t:"中國因素", en:"China", d:"經濟、通縮、政局。"},
+  {n:8, t:"本地經濟", en:"Local", d:"香港本地經濟、消費、人口與市道下行。"}
 ];
 
 // ---- 最新 PYM 相關新聞（人手精選；risk 對應「甚麼是 PYM」七大風險）----
@@ -642,10 +643,10 @@ const TOOLS = [
 <section class="block" id="about">
   <div class="wrap">
     <div class="sec-head">
-      <h2><span class="kicker">WHAT IS PYM</span>甚麼是 PYM？七大風險</h2>
+      <h2><span class="kicker">WHAT IS PYM</span>甚麼是 PYM？八大風險</h2>
     </div>
     <div class="pym-intro">
-      <p><b>PYM（Protect Your Money）聚焦「資產所在」的七類風險</b>——即係你啲錢放喺邊、經邊個平台、受邊個政權管，而唔係一般投資買乜升跌。<b>不計</b>環球經濟／本地經濟的一般波動。</p>
+      <p><b>PYM（Protect Your Money）聚焦「資產所在」的八類風險</b>——即係你啲錢放喺邊、經邊個平台、受邊個政權管，而唔係一般投資買乜升跌，涵蓋由格價到香港本地經濟共八類風險。</p>
     </div>
     <div class="risk-grid" id="risk-grid"></div>
   </div>
@@ -851,9 +852,7 @@ document.getElementById('risk-grid').innerHTML = RISKS.map(r=>`
     <div class="num">${r.n}</div>
     <h4>${r.t}</h4><span class="en">${r.en}</span>
     <p>${r.d}</p>
-  </div>`).join('') +
-  `<div class="risk note"><div class="num">!</div><h4>不計在內</h4><span class="en">Excluded</span>
-   <p>環球經濟／本地經濟的一般升跌，不屬 PYM 風險範圍。</p></div>`;
+  </div>`).join('');
 
 // ---- Latest PYM news (self-made risk thumbnails, copyright-safe) ----
 const RISK_VIS = {
