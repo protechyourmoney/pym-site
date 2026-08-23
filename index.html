@@ -244,6 +244,14 @@
   .ptl-t:hover{color:var(--gold)}
   .ptl-sum{margin:0 0 8px;color:var(--muted);font-size:13.5px;line-height:1.7}
   .ptl-src{color:#6b7789;font-size:12px}
+  .qa-item{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:16px;margin-bottom:12px}
+  .qa-meta{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+  .qa-club{font-weight:800;font-size:12px;color:var(--gold);background:rgba(227,179,65,.12);padding:3px 10px;border-radius:999px}
+  .qa-date{color:var(--muted);font-size:12px}
+  .qa-q{font-weight:700;font-size:15.5px;line-height:1.5;margin-bottom:8px}
+  .qa-show{color:var(--muted);font-size:13.5px;margin-bottom:8px}
+  .qa-link{color:#ff8a8d;font-weight:700;font-size:13px}
+  .qa-link:hover{color:var(--gold)}
 </style>
 </head>
 <body>
@@ -586,6 +594,7 @@ const TOOLS = [
           <a href="#earnings">美股業績</a>
           <a href="#analysis">美股分析・新聞</a>
           <a href="#bbstocks">財富BB班內容</a>
+          <a href="#clubqa">會友 QA</a>
         </span>
       </span>
       <span class="dd">
@@ -766,6 +775,10 @@ const TOOLS = [
     <div class="chan-title" style="margin-top:28px">💵 財富BB班 · Patreon</div>
     <div class="show-list" id="bbpat-list"></div>
     <div style="margin-top:14px"><a class="btn ghost" href="https://www.patreon.com/wealthclub" target="_blank" rel="noopener">前往財富BB Club Patreon →</a></div>
+
+    <div class="chan-title" id="clubqa" style="margin-top:28px">🙋 會友 QA</div>
+    <input id="qa-search" class="earn-search" type="search" placeholder="搜尋日期、會友、問題、節目關鍵字…" aria-label="搜尋會友QA">
+    <div id="qa-list"></div>
   </div>
 </section>
 
@@ -914,6 +927,27 @@ renderNews('pnews');
 renderNews('hk-news','香港');
 renderNews('cn-news','中國');
 renderNews('us-news','美國');
+
+// ---- 會友 QA（可搜尋）----
+const QA = [
+  {date:"2026-08-20", club:"P Club 友", q:"香港銀行匯款去外國 IB，會唔會被查／限制資金來源？點做先穩陣？", show:"《PYM 避險逃生門》09 · QA：香港銀行匯出外國／外國 IB", url:"https://www.patreon.com/wealthclub/posts/pym-bi-xian-tao-165058092"}
+];
+function renderQA(q){
+  q=(q||'').trim().toLowerCase();
+  const box=document.getElementById('qa-list'); if(!box) return;
+  let list=QA.slice().sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+  if(q) list=list.filter(x=>[x.date,x.club,x.q,x.show].join(' ').toLowerCase().includes(q));
+  if(!list.length){ box.innerHTML='<div class="loading">未有相關 QA。</div>'; return; }
+  box.innerHTML=list.map(x=>`
+    <div class="qa-item">
+      <div class="qa-meta"><span class="qa-club">${x.club||''}</span><span class="qa-date">${x.date||''}</span></div>
+      <div class="qa-q">Q：${x.q||''}</div>
+      ${x.show?`<div class="qa-show">📺 ${x.show}</div>`:''}
+      ${x.url?`<a class="qa-link" href="${x.url}" target="_blank" rel="noopener">▶ 睇片／節目</a>`:''}
+    </div>`).join('');
+}
+document.getElementById('qa-search').addEventListener('input', e=>renderQA(e.target.value));
+renderQA('');
 
 // ---- PYM shows ----
 function showLinks(links){
