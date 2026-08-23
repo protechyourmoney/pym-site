@@ -244,7 +244,11 @@
   .ptl-t:hover{color:var(--gold)}
   .ptl-sum{margin:0 0 8px;color:var(--muted);font-size:13.5px;line-height:1.7}
   .ptl-src{color:#6b7789;font-size:12px}
-  .qa-item{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:16px;margin-bottom:12px}
+  .qa-item{display:flex;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:16px;margin-bottom:12px}
+  .qa-body{flex:1 1 auto;min-width:0}
+  .qa-thumb{flex:0 0 132px;width:132px;aspect-ratio:16/9;border-radius:8px;object-fit:cover;border:1px solid var(--line);background:#000}
+  .qa-ph{display:flex;align-items:center;justify-content:center;color:var(--gold);font-weight:800;font-size:13px;letter-spacing:1px;background:rgba(227,179,65,.10)}
+  @media(max-width:560px){.qa-thumb{flex-basis:100px;width:100px}}
   .qa-meta{display:flex;gap:10px;align-items:center;margin-bottom:8px}
   .qa-club{font-weight:800;font-size:12px;color:var(--gold);background:rgba(227,179,65,.12);padding:3px 10px;border-radius:999px}
   .qa-date{color:var(--muted);font-size:12px}
@@ -932,6 +936,13 @@ renderNews('us-news','美國');
 const QA = [
   {date:"2026-08-20", club:"P Club 友", q:"香港銀行匯款去外國 IB，會唔會被查／限制資金來源？點做先穩陣？", show:"《PYM 避險逃生門》09 · QA：香港銀行匯出外國／外國 IB", url:"https://www.patreon.com/wealthclub/posts/pym-bi-xian-tao-165058092"}
 ];
+function qaThumb(x){
+  const vid = ytId(x.url||'');
+  let src = vid ? `https://i.ytimg.com/vi/${vid}/mqdefault.jpg` : (x.img||'');
+  if(src) return `<img class="qa-thumb" src="${src}" alt="" loading="lazy">`;
+  if((x.url||'').includes('patreon')) return `<div class="qa-thumb qa-ph">Patreon</div>`;
+  return '';
+}
 function renderQA(q){
   q=(q||'').trim().toLowerCase();
   const box=document.getElementById('qa-list'); if(!box) return;
@@ -940,10 +951,13 @@ function renderQA(q){
   if(!list.length){ box.innerHTML='<div class="loading">未有相關 QA。</div>'; return; }
   box.innerHTML=list.map(x=>`
     <div class="qa-item">
-      <div class="qa-meta"><span class="qa-club">${x.club||''}</span><span class="qa-date">${x.date||''}</span></div>
-      <div class="qa-q">Q：${x.q||''}</div>
-      ${x.show?`<div class="qa-show">📺 ${x.show}</div>`:''}
-      ${x.url?`<a class="qa-link" href="${x.url}" target="_blank" rel="noopener">▶ 睇片／節目</a>`:''}
+      <div class="qa-body">
+        <div class="qa-meta"><span class="qa-club">${x.club||''}</span><span class="qa-date">${x.date||''}</span></div>
+        <div class="qa-q">Q：${x.q||''}</div>
+        ${x.show?`<div class="qa-show">📺 ${x.show}</div>`:''}
+        ${x.url?`<a class="qa-link" href="${x.url}" target="_blank" rel="noopener">▶ 睇片／節目</a>`:''}
+      </div>
+      ${qaThumb(x)}
     </div>`).join('');
 }
 document.getElementById('qa-search').addEventListener('input', e=>renderQA(e.target.value));
