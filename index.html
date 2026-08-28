@@ -254,6 +254,8 @@
   .qa-date{color:var(--muted);font-size:12px}
   .qa-q{font-weight:700;font-size:15.5px;line-height:1.5;margin-bottom:8px}
   .qa-show{color:var(--muted);font-size:13.5px;margin-bottom:8px}
+  .qa-no{font-weight:800;font-size:12px;color:var(--muted);background:var(--bg2);padding:3px 8px;border-radius:6px}
+  .qa-links{display:flex;gap:12px;flex-wrap:wrap}
   .qa-link{color:#ff8a8d;font-weight:700;font-size:13px}
   .qa-link:hover{color:var(--gold)}
 </style>
@@ -966,6 +968,7 @@ renderNews('us-news','美國');
 
 // ---- 會友 QA（可搜尋）----
 const QA = [
+  {no:182, date:"2026-08-25", club:"S Club 友", q:"本想長揸台積電（2330.TW），但擔心中共攻台，應該點部署？", show:"《馮同學研習班》EP15 · 台積電、台海風險", links:[["財富BB班","https://www.patreon.com/wealthclub/posts/-tong-xue-xi-167175698"],["CC工作室","https://www.patreon.com/calvinwine/posts/-tong-xue-xi-167175439"]]},
   {date:"2026-08-19", club:"C Club 友", q:"Wise 喺跨境匯款扮演咩角色？擺錢喺 Wise 安唔安全？", show:"《PYM 避險逃生門》06 · 問題：Wise 的匯款角色", url:"https://www.patreon.com/wealthclub/posts/pym-bi-xian-tao-161840772"},
   {date:"2026-08-18", club:"B Club 友", q:"點解話「格價波動」唔算真正風險？八大風點具體係邊八樣？", show:"《PYM 避險逃生門》02 · 八大風點逐樣數", url:"https://youtu.be/Uhxq2EL3BpA"},
   {date:"2026-08-17", club:"P Club 友", q:"港股跌穿 24000，而家先開始避險仲嚟唔嚟得切？", show:"《PYM 避險逃生門》05 · 聯播LIVE：保住資產全攻略", url:"https://youtube.com/live/A7vcbYMZRoM"},
@@ -974,25 +977,25 @@ const QA = [
   {date:"2026-08-20", club:"P Club 友", q:"香港銀行匯款去外國 IB，會唔會被查／限制資金來源？點做先穩陣？", show:"《PYM 避險逃生門》09 · QA：香港銀行匯出外國／外國 IB", url:"https://www.patreon.com/wealthclub/posts/pym-bi-xian-tao-165058092"}
 ];
 function qaThumb(x){
-  const vid = ytId(x.url||'');
+  const u = x.url || (x.links && x.links[0] && x.links[0][1]) || ''; const vid = ytId(u);
   let src = vid ? `https://i.ytimg.com/vi/${vid}/mqdefault.jpg` : (x.img||'');
   if(src) return `<img class="qa-thumb" src="${src}" alt="" loading="lazy">`;
-  if((x.url||'').includes('patreon')) return `<div class="qa-thumb qa-ph">Patreon</div>`;
+  if(u.includes('patreon')) return `<div class="qa-thumb qa-ph">Patreon</div>`;
   return '';
 }
 function renderQA(q){
   q=(q||'').trim().toLowerCase();
   const box=document.getElementById('qa-list'); if(!box) return;
   let list=QA.slice().sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
-  if(q) list=list.filter(x=>[x.date,x.club,x.q,x.show].join(' ').toLowerCase().includes(q));
+  if(q) list=list.filter(x=>[x.date,x.club,x.q,x.show,x.no].join(' ').toLowerCase().includes(q));
   if(!list.length){ box.innerHTML='<div class="loading">未有相關 QA。</div>'; return; }
   box.innerHTML=list.map(x=>`
     <div class="qa-item">
       <div class="qa-body">
-        <div class="qa-meta"><span class="qa-club">${x.club||''}</span><span class="qa-date">${x.date||''}</span></div>
+        <div class="qa-meta">${x.no?`<span class="qa-no">#${x.no}</span>`:''}<span class="qa-club">${x.club||''}</span><span class="qa-date">${x.date||''}</span></div>
         <div class="qa-q">Q：${x.q||''}</div>
         ${x.show?`<div class="qa-show">📺 ${x.show}</div>`:''}
-        ${x.url?`<a class="qa-link" href="${x.url}" target="_blank" rel="noopener">▶ 睇片／節目</a>`:''}
+        ${x.links ? '<div class="qa-links">'+x.links.map(l=>`<a class="qa-link" href="${l[1]}" target="_blank" rel="noopener">▶ ${l[0]}</a>`).join('')+'</div>' : (x.url?`<a class="qa-link" href="${x.url}" target="_blank" rel="noopener">▶ 睇片／節目</a>`:'')}
       </div>
       ${qaThumb(x)}
     </div>`).join('');
