@@ -271,6 +271,13 @@
   .host-text{flex:1 1 auto;min-width:0}
   .host-quote{color:var(--gold);font-weight:800;font-size:16px;margin-bottom:8px}
   @media(max-width:560px){.about-host{flex-direction:column;text-align:center}}
+  .master-list{display:flex;flex-direction:column;gap:12px}
+  .master-item{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .master-item:hover{border-color:var(--gold)}
+  .mi-meta{color:var(--muted);font-size:12px;margin-bottom:6px}
+  .mi-title{font-weight:700;font-size:15.5px;line-height:1.45}
+  .master-item:hover .mi-title{color:var(--gold)}
+  .mi-sum{color:var(--muted);font-size:13.5px;margin-top:6px}
 </style>
 </head>
 <body class="view-pym">
@@ -866,6 +873,14 @@ const TOOLS = [
   </div>
 </section>
 
+<!-- 李嘉誠動向 (PYM) -->
+<section class="block t-pym" id="lks">
+  <div class="wrap">
+    <div class="sec-head"><h2><span class="kicker">避險宗師 · PYM</span>李嘉誠動向</h2><span class="more">撤資・走盞・落袋為安</span></div>
+    <div class="master-list" id="lks-feed"></div>
+  </div>
+</section>
+
 <section class="block" id="showsmedia">
   <div class="wrap">
     <div class="sec-head">
@@ -954,6 +969,14 @@ const TOOLS = [
     <p class="esum" id="em-summary"></p>
   </div>
 </div>
+
+<!-- 巴菲特 (GYM) -->
+<section class="block t-gym" id="buffett">
+  <div class="wrap">
+    <div class="sec-head"><h2><span class="kicker">增值宗師 · GYM</span>巴菲特・波克夏</h2><span class="more">長線・價值・複利</span></div>
+    <div class="master-list" id="buf-feed"></div>
+  </div>
+</section>
 
 <!-- SUPPORT -->
 <section class="block" id="support">
@@ -1141,6 +1164,29 @@ document.querySelectorAll('.menu a[href^="#"]').forEach(a=>{
     const el=document.querySelector(a.getAttribute('href')); if(!el) return;
     if(el.closest('.t-gym')) setView('gym');
     else if(el.closest('.t-pym')) setView('pym');
+
+// ---- 宗師專欄：李嘉誠(PYM) / 巴菲特(GYM) ----
+const LKS = [
+  {date:"2026-08", source:"綜合媒體", title:"長和推進 228 億美元賣全球 43 個港口，北京要求中企控股、傳內地啟動調查", url:"https://tw.stock.yahoo.com/news/%E9%95%B7%E5%92%8C%E8%B3%A3%E5%B7%B4%E6%8B%BF%E9%A6%AC%E6%B8%AF%E5%8F%A3-%E5%82%B3%E9%99%B8%E5%95%9F%E5%8B%95%E8%AA%BF%E6%9F%A5-201000272.html", summary:"長和擬將 23 國 43 個港口（企業值 228 億美元）售予貝萊德牽頭財團；北京要求中企取得控股權、傳啟動調查，交易一波三折——避險宗師落袋為安遇上地緣阻力。"},
+  {date:"2026-02", source:"端傳媒", title:"巴拿馬撤銷長和港口特許經營權，港口交馬士基、MSC 接管", url:"https://theinitium.com/20260226-whatsnew-panama-canal-ports-us-china/", summary:"巴拿馬最高院裁長和港口特許權違憲並撤銷，政府強制接管、驅離員工，臨時營運交丹麥馬士基與瑞士 MSC。中美角力下嘅資產風險活教材。"},
+  {date:"2026", source:"轉角國際", title:"長和就巴拿馬港口向國際仲裁擴大索償逾 20 億美元", url:"https://global.udn.com/global_vision/story/8663/9354234", summary:"就港口被撤，長和向國際仲裁院提交資料、擴大索償至逾 20 億美元，循法律途徑追討。"}
+];
+const BUFFETT = [
+  {date:"2026-08", source:"CNBC", title:"Abel 動用巴菲特現金：Q2 回購約 45 億美元、淨買股近 200 億，逆轉沽售", url:"https://www.cnbc.com/2026/08/09/abel-puts-a-big-chunk-of-berkshires-cash-to-work.html", summary:"新任 CEO Greg Abel 一改巴菲特晚年審慎：Q2 回購約 45 億美元（Q1 僅 2.35 億），並淨買入股票近 200 億，波克夏由淨沽轉淨買——增值宗師開始動用彈藥。"},
+  {date:"2026-05", source:"CNN", title:"波克夏現金創 3,974 億美元紀錄（Abel 首季 CEO）", url:"https://edition.cnn.com/2026/05/02/business/berkshire-hathaway-earnings-buffett", summary:"Abel 上任首季，波克夏現金升至逾 3,974 億美元歷史新高；至 6 月底回落 8% 至 3,655 億，反映開始部署資金。"},
+  {date:"2026-01", source:"PBS", title:"Greg Abel 接任波克夏 CEO，巴菲特留任主席", url:"https://www.pbs.org/newshour/amp/nation/warren-buffett-will-remain-berkshire-hathaway-chairman-after-greg-abel-takes-over-as-ceo-in-2026", summary:"2026 年 1 月 1 日 Greg Abel 正式接任波克夏 CEO，巴菲特續任主席。世代交接下，價值投資與龐大現金如何部署成焦點。"}
+];
+function renderMaster(elId, arr){
+  const el=document.getElementById(elId); if(!el) return;
+  el.innerHTML=arr.map(m=>`
+    <a class="master-item" href="${m.url}" target="_blank" rel="noopener">
+      <div class="mi-meta">${m.date||''}${m.source?` · ${m.source}`:''}</div>
+      <div class="mi-title">${m.title||''}</div>
+      ${m.summary?`<div class="mi-sum">${m.summary}</div>`:''}
+    </a>`).join('');
+}
+renderMaster('lks-feed', LKS);
+renderMaster('buf-feed', BUFFETT);
   });
 });
 setView('pym');
