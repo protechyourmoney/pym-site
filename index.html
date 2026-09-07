@@ -278,6 +278,10 @@
   .mi-title{font-weight:700;font-size:15.5px;line-height:1.45}
   .master-item:hover .mi-title{color:var(--gold)}
   .mi-sum{color:var(--muted);font-size:13.5px;margin-top:6px}
+  .theme-bar{position:sticky;top:63px;z-index:40;background:rgba(13,17,23,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:8px 0}
+  .theme-bar .theme-switch{padding:5px}
+  .theme-bar .ts-btn{padding:10px 8px;font-size:16px}
+  @media(max-width:560px){.theme-bar .ts-btn{font-size:14px;padding:9px 4px}.theme-bar .ts-btn .ts-sub{font-size:10px}}
 </style>
 </head>
 <body class="view-pym">
@@ -780,6 +784,15 @@ const TOOLS = [
   </div>
 </header>
 
+<div class="theme-bar">
+  <div class="wrap">
+    <div class="theme-switch">
+      <button class="ts-btn active" data-view="pym" onclick="setView('pym')">🛡️ PYM 避險<span class="ts-sub">Protect Your Money · 新聞・風險</span></button>
+      <button class="ts-btn" data-view="gym" onclick="setView('gym')">💪 GYM 增值<span class="ts-sub">Grow Your Money · 投資・美股</span></button>
+    </div>
+  </div>
+</div>
+
 <a id="top"></a>
 <section class="hero">
   <div class="wrap">
@@ -807,16 +820,6 @@ const TOOLS = [
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- THEME SWITCH -->
-<section class="block" style="border-top:0;padding:14px 0 4px">
-  <div class="wrap">
-    <div class="theme-switch">
-      <button class="ts-btn active" data-view="pym" onclick="setView('pym')">🛡️ PYM 避險<span class="ts-sub">Protect Your Money · 新聞・風險</span></button>
-      <button class="ts-btn" data-view="gym" onclick="setView('gym')">💪 GYM 增值<span class="ts-sub">Grow Your Money · 投資・美股</span></button>
     </div>
   </div>
 </section>
