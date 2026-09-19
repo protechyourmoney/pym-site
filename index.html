@@ -284,7 +284,8 @@
   @media(max-width:560px){.theme-bar .ts-btn{font-size:14px;padding:9px 4px}.theme-bar .ts-btn .ts-sub{font-size:10px}}
 
   /* --- lite YouTube facade --- */
-  .yt-embed .yt-lite{position:absolute;inset:0;width:100%;height:100%;border:0;cursor:pointer;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;padding:0}
+  .yt-embed .yt-lite{position:absolute;inset:0;width:100%;height:100%;border:0;cursor:pointer;background:#000;display:flex;align-items:center;justify-content:center;padding:0;overflow:hidden}
+  .yt-embed .yt-thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .yt-embed .yt-lite::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.12);transition:.2s}
   .yt-embed .yt-lite:hover::after{background:rgba(0,0,0,.28)}
   .yt-play{position:relative;z-index:1;width:68px;height:48px;border-radius:12px;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;transition:.2s}
@@ -1472,8 +1473,9 @@ function ytMount(iframeId, vid){
   var el = document.getElementById(iframeId); if(!el || !vid) return;
   var box = el.closest('.yt-embed'); if(!box) return;
   box.dataset.vid = vid;
-  box.innerHTML = '<button class="yt-lite" type="button" aria-label="播放影片" '
-    + 'style="background-image:url(https://i.ytimg.com/vi/' + vid + '/hqdefault.jpg)">'
+  box.innerHTML = '<button class="yt-lite" type="button" aria-label="播放影片">'
+    + '<img class="yt-thumb" src="https://i.ytimg.com/vi/' + vid + '/hqdefault.jpg" alt="" loading="lazy" '
+    + 'onerror="this.src=\'https://i.ytimg.com/vi/' + vid + '/mqdefault.jpg\'">'
     + '<span class="yt-play"></span></button>';
   box.querySelector('.yt-lite').addEventListener('click', function(){
     box.innerHTML = '<iframe src="https://www.youtube.com/embed/' + box.dataset.vid
@@ -1503,10 +1505,10 @@ async function ytRefresh(iframeId, feedUrl){
   const host = document.getElementById(iframeId) ? document.getElementById(iframeId).closest('.yt-embed') : null;
   if(!host) return;
   const vid = await ytFeedLatest(feedUrl);
-  const lite = host.querySelector('.yt-lite');
-  if(vid && lite && host.dataset.vid !== vid){
+  const img = host.querySelector('.yt-thumb');
+  if(vid && img && host.dataset.vid !== vid){
     host.dataset.vid = vid;
-    lite.style.backgroundImage = 'url(https://i.ytimg.com/vi/' + vid + '/hqdefault.jpg)';
+    img.src = 'https://i.ytimg.com/vi/' + vid + '/hqdefault.jpg';
   }
 }
 var _ccn = document.getElementById('ytf-name-1'); if(_ccn) _ccn.textContent = CONFIG.youtube.ccnews.name;
