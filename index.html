@@ -282,6 +282,19 @@
   .theme-bar .theme-switch{padding:5px}
   .theme-bar .ts-btn{padding:10px 8px;font-size:16px}
   @media(max-width:560px){.theme-bar .ts-btn{font-size:14px;padding:9px 4px}.theme-bar .ts-btn .ts-sub{font-size:10px}}
+
+  /* --- GYM view accents + hero art --- */
+  .gym-tag{color:#34d399 !important;border-color:rgba(52,211,153,.45) !important}
+  .gym-art{background:linear-gradient(150deg,#0f2a22,#0b1f1a 55%,#0e1512);border:1px solid rgba(52,211,153,.28);border-radius:18px;padding:26px 22px;box-shadow:0 20px 50px rgba(0,0,0,.45)}
+  .gym-art-title{font-size:26px;font-weight:800;color:#eafff5;letter-spacing:.5px}
+  .gym-art-sub{font-size:12px;color:#7fd8b8;margin-top:5px;letter-spacing:1.5px;text-transform:uppercase}
+  .gym-art-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:22px}
+  .gym-cell{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.045);border:1px solid rgba(52,211,153,.2);border-radius:12px;padding:13px 14px;text-decoration:none;transition:.15s}
+  .gym-cell:hover{background:rgba(52,211,153,.12);transform:translateY(-2px)}
+  .gym-cell .gc-ico{font-size:20px}
+  .gym-cell .gc-t{font-size:14px;font-weight:600;color:#dff5ec}
+  .yt-embed-wide{max-width:760px}
+  body.view-gym .theme-switch .ts-btn[data-view="gym"].active{box-shadow:inset 0 0 0 2px rgba(52,211,153,.5)}
 </style>
 </head>
 <body class="view-pym">
@@ -893,7 +906,7 @@ const TOOLS = [
 </div>
 
 <a id="top"></a>
-<section class="hero">
+<section class="hero t-pym">
   <div class="wrap">
     <div class="hero-grid">
       <div class="hero-copy">
@@ -901,7 +914,7 @@ const TOOLS = [
         <h1>亂世之中，<br>守住你的資產。<span class="en">PROTECT YOUR MONEY</span></h1>
         <p class="lede">PYM 避險逃生門 — 為華人提供資產與人身安全的避險資訊、與中國有關的風險新聞、深度分析，以及最新影片與會員內容。</p>
         <div class="btns">
-          <a class="btn primary" href="#shows">最新 PYM 節目</a>
+          <a class="btn primary" href="#showsmedia">最新 PYM 節目</a>
           <a class="btn ghost" href="#about">甚麼是 PYM</a>
         </div>
       </div>
@@ -923,22 +936,56 @@ const TOOLS = [
   </div>
 </section>
 
+<!-- GYM HERO -->
+<section class="hero t-gym">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="tag gym-tag">增值 · 增長 · 美股投資</span>
+        <h1>讓你的財富，<br>穩步增長。<span class="en">GROW YOUR MONEY</span></h1>
+        <p class="lede">GYM 增值 — 美股投資與增長內容：美股業績追蹤、深度分析與新聞重點、榕樹頭講股，以及財富BB班最新影片與會友 QA。</p>
+        <div class="btns">
+          <a class="btn primary" href="#bbstocks">最新財富BB班影片</a>
+          <a class="btn ghost" href="#earnings">睇美股業績</a>
+        </div>
+      </div>
+      <div class="hero-art">
+        <div class="gym-art">
+          <div class="gym-art-title">GYM 增值學院</div>
+          <div class="gym-art-sub">Grow Your Money · 投資 · 美股</div>
+          <div class="gym-art-grid">
+            <a class="gym-cell" href="#earnings"><span class="gc-ico">📊</span><span class="gc-t">美股業績</span></a>
+            <a class="gym-cell" href="#analysis"><span class="gc-ico">🧠</span><span class="gc-t">美股分析</span></a>
+            <a class="gym-cell" href="#analysis"><span class="gc-ico">▶</span><span class="gc-t">榕樹頭講股</span></a>
+            <a class="gym-cell" href="#bbstocks"><span class="gc-ico">🎓</span><span class="gc-t">財富BB班</span></a>
+            <a class="gym-cell" href="#bbstocks"><span class="gc-ico">📈</span><span class="gc-t">美股 Vin 化爐</span></a>
+            <a class="gym-cell" href="#clubqa"><span class="gc-ico">🙋</span><span class="gc-t">會友 QA</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- FEATURED LATEST VIDEOS -->
-<section class="block" id="featured" style="border-top:0;padding-top:6px">
+<section class="block t-pym" id="featured" style="border-top:0;padding-top:6px">
   <div class="wrap">
     <div class="sec-head">
-      <h2><span class="kicker">📺 最新一集</span>YouTube 最新影片</h2>
+      <h2><span class="kicker">📺 最新一集</span>CC 新聞 · 最新影片</h2>
+      <span class="more">避險・風險・時事</span>
     </div>
-    <div class="grid g2">
-      <div>
-        <div class="chan-title" id="ytf-name-1"></div>
-        <div class="yt-embed"><iframe id="ytf-1" allowfullscreen loading="lazy"></iframe></div>
-      </div>
-      <div>
-        <div class="chan-title" id="ytf-name-2"></div>
-        <div class="yt-embed"><iframe id="ytf-2" allowfullscreen loading="lazy"></iframe></div>
-      </div>
+    <div class="chan-title" id="ytf-name-1"></div>
+    <div class="yt-embed yt-embed-wide"><iframe id="ytf-1" allowfullscreen loading="lazy"></iframe></div>
+  </div>
+</section>
+<section class="block t-gym" id="featured-gym" style="border-top:0;padding-top:6px">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2><span class="kicker">📺 最新一集</span>財富BB班 · 最新影片</h2>
+      <span class="more">美股・投資・增值</span>
     </div>
+    <div class="chan-title" id="ytf-name-2"></div>
+    <div class="yt-embed yt-embed-wide"><iframe id="ytf-2" allowfullscreen loading="lazy"></iframe></div>
   </div>
 </section>
 
@@ -995,7 +1042,7 @@ const TOOLS = [
   </div>
 </section>
 
-<section class="block" id="showsmedia">
+<section class="block t-pym" id="showsmedia">
   <div class="wrap">
     <div class="sec-head">
       <h2><span class="kicker">LATEST · 突發避險</span>最新節目／影片</h2>
@@ -1005,17 +1052,6 @@ const TOOLS = [
     <div id="show-feat"></div>
     <div class="show-list" id="show-list"></div>
 
-    <div class="chan-title" style="margin-top:28px">最新影片 YouTube</div>
-    <div class="grid g2">
-      <div>
-        <div class="chan-title" id="yt-name-1"></div>
-        <div class="yt-embed"><iframe id="yt-1" allowfullscreen loading="lazy"></iframe></div>
-      </div>
-      <div>
-        <div class="chan-title" id="yt-name-2"></div>
-        <div class="yt-embed"><iframe id="yt-2" allowfullscreen loading="lazy"></iframe></div>
-      </div>
-    </div>
 
     <div class="chan-title" style="margin-top:28px">精選相關影片</div>
     <div class="grid g3" id="clips"></div>
@@ -1023,7 +1059,7 @@ const TOOLS = [
 </section>
 
 <!-- SUBSTACK -->
-<section class="block" id="articles">
+<section class="block t-pym" id="articles">
   <div class="wrap">
     <div class="sec-head">
       <h2><span class="kicker">IN-DEPTH</span>深度文章 Substack（中／英）</h2>
@@ -1278,6 +1314,9 @@ document.querySelectorAll('.menu a[href^="#"]').forEach(a=>{
     const el=document.querySelector(a.getAttribute('href')); if(!el) return;
     if(el.closest('.t-gym')) setView('gym');
     else if(el.closest('.t-pym')) setView('pym');
+    var _menu=document.querySelector('.menu'); if(_menu && window.innerWidth<=780) _menu.style.display='none';
+  });
+});
 
 // ---- 宗師專欄：李嘉誠(PYM) / 巴菲特(GYM) ----
 const LKS = [
@@ -1301,8 +1340,6 @@ function renderMaster(elId, arr){
 }
 renderMaster('lks-feed', LKS);
 renderMaster('buf-feed', BUFFETT);
-  });
-});
 setView('pym');
 
 // ---- PYM shows ----
@@ -1352,7 +1389,7 @@ function renderShowList(id, arr){
 }
 renderShowList('vin-list', VIN);
 renderShowList('bbpat-list', BBPAT);
-document.getElementById('yt-bb').src = 'https://www.youtube.com/embed/videoseries?list=' + uploadsId(CONFIG.youtube.wealthbb.id);
+// yt-bb 由下方 loadLatest 統一載入
 
 // ---- 美股業績資料庫（可搜尋 + 詳情彈窗）----
 let EARN_VIEW = [];
@@ -1420,18 +1457,28 @@ function ytId(u){
   document.getElementById('yt-earn').src = 'https://www.youtube.com/embed/videoseries?list=PLUXfng5J89fKh7_ZGVlOXvUziem95P4jd';
 })();
 
-// ---- YouTube embeds (uploads playlist = always latest) ----
+// ---- YouTube latest video (reliable via channel RSS feed) ----
 function uploadsId(id){ return 'UU' + id.slice(2); }
-function initYT(slot, chan){
-  document.getElementById('yt-name-'+slot).textContent = chan.name;
-  document.getElementById('yt-'+slot).src = 'https://www.youtube.com/embed/videoseries?list=' + uploadsId(chan.id);
+async function ytLatestId(channelId){
+  const xml = await fetchViaProxy('https://www.youtube.com/feeds/videos.xml?channel_id=' + channelId);
+  const m = xml.match(/<yt:videoId>([^<]+)<\/yt:videoId>/);
+  if(!m) throw new Error('no video');
+  return m[1];
 }
-initYT(1, CONFIG.youtube.ccnews);
-document.getElementById('ytf-name-1').textContent = CONFIG.youtube.ccnews.name;
-document.getElementById('ytf-1').src = 'https://www.youtube.com/embed/videoseries?list=' + uploadsId(CONFIG.youtube.ccnews.id);
-document.getElementById('ytf-name-2').textContent = CONFIG.youtube.wealthbb.name;
-document.getElementById('ytf-2').src = 'https://www.youtube.com/embed/videoseries?list=' + uploadsId(CONFIG.youtube.wealthbb.id);
-initYT(2, CONFIG.youtube.wealthbb);
+async function loadLatest(iframeId, chan){
+  const el = document.getElementById(iframeId); if(!el) return;
+  try{
+    const vid = await ytLatestId(chan.id);
+    el.src = 'https://www.youtube.com/embed/' + vid + '?rel=0';
+  }catch(e){
+    el.src = 'https://www.youtube.com/embed/videoseries?list=' + uploadsId(chan.id);
+  }
+}
+var _ccn = document.getElementById('ytf-name-1'); if(_ccn) _ccn.textContent = CONFIG.youtube.ccnews.name;
+var _bbn = document.getElementById('ytf-name-2'); if(_bbn) _bbn.textContent = CONFIG.youtube.wealthbb.name;
+loadLatest('ytf-1', CONFIG.youtube.ccnews);
+loadLatest('ytf-2', CONFIG.youtube.wealthbb);
+loadLatest('yt-bb', CONFIG.youtube.wealthbb);
 
 // ---- RSS helper: fetch raw feed via CORS proxy, parse XML ----
 async function fetchViaProxy(url){
