@@ -283,6 +283,13 @@
   .theme-bar .ts-btn{padding:10px 8px;font-size:16px}
   @media(max-width:560px){.theme-bar .ts-btn{font-size:14px;padding:9px 4px}.theme-bar .ts-btn .ts-sub{font-size:10px}}
 
+  /* --- lite YouTube facade --- */
+  .yt-embed .yt-lite{position:absolute;inset:0;width:100%;height:100%;border:0;cursor:pointer;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;padding:0}
+  .yt-embed .yt-lite::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.12);transition:.2s}
+  .yt-embed .yt-lite:hover::after{background:rgba(0,0,0,.28)}
+  .yt-play{position:relative;z-index:1;width:68px;height:48px;border-radius:12px;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;transition:.2s}
+  .yt-embed .yt-lite:hover .yt-play{background:#f00}
+  .yt-play::before{content:'';display:block;border-style:solid;border-width:11px 0 11px 18px;border-color:transparent transparent transparent #fff;margin-left:4px}
   /* --- GYM view accents + hero art --- */
   .gym-tag{color:#34d399 !important;border-color:rgba(52,211,153,.45) !important}
   .gym-art{background:linear-gradient(150deg,#0f2a22,#0b1f1a 55%,#0e1512);border:1px solid rgba(52,211,153,.28);border-radius:18px;padding:26px 22px;box-shadow:0 20px 50px rgba(0,0,0,.45)}
@@ -303,8 +310,9 @@
 <script>
 const CONFIG = {
   youtube: {
-    ccnews:   { id: "UCVZTkv6LM-_xWUM9t-jS5JA", name: "CC 新聞 · CC News" },
-    wealthbb: { id: "UCVhbVP8jiQcGhfUM5ZR6Gvw", name: "財富BB班 · Calvin Wine" }
+    ccnews:   { id: "UCVZTkv6LM-_xWUM9t-jS5JA", name: "CC 新聞 · CC News", latest: "YMFpq59ZGqc" },
+    wealthbb: { id: "UCVhbVP8jiQcGhfUM5ZR6Gvw", name: "財富BB班 · Calvin Wine", latest: "SJsGO73ftbE" },
+    rongshu:  { playlist: "PLUXfng5J89fKh7_ZGVlOXvUziem95P4jd", name: "榕樹頭講股", latest: "tgQcCx1DVXQ" }
   },
   substackUrl: "https://protectyourmoney.substack.com",
   chinaRiskQuery: "中國 風險 銀行 OR 房地產 OR 走資 OR 外匯 OR 債務",
@@ -1454,31 +1462,64 @@ function ytId(u){
         ${a.video?`<div class="yt-embed"><iframe src="https://www.youtube.com/embed/${ytId(a.video)}" allowfullscreen loading="lazy"></iframe></div>`:''}
       </div>`).join('');
   }
-  document.getElementById('yt-earn').src = 'https://www.youtube.com/embed/videoseries?list=PLUXfng5J89fKh7_ZGVlOXvUziem95P4jd';
+  ytMount('yt-earn', CONFIG.youtube.rongshu.latest);
+  ytRefresh('yt-earn', 'https://www.youtube.com/feeds/videos.xml?playlist_id=' + CONFIG.youtube.rongshu.playlist);
 })();
 
 // ---- YouTube latest video (reliable via channel RSS feed) ----
-function uploadsId(id){ return 'UU' + id.slice(2); }
-async function ytLatestId(channelId){
-  const xml = await fetchViaProxy('https://www.youtube.com/feeds/videos.xml?channel_id=' + channelId);
-  const m = xml.match(/<yt:videoId>([^<]+)<\/yt:videoId>/);
-  if(!m) throw new Error('no video');
-  return m[1];
+// Lite-YouTube facade: 縮圖即時顯示（可靠），按下先載入播放器
+function ytMount(iframeId, vid){
+  var el = document.getElementById(iframeId); if(!el || !vid) return;
+  var box = el.closest('.yt-embed'); if(!box) return;
+  box.dataset.vid = vid;
+  box.innerHTML = '<button class="yt-lite" type="button" aria-label="播放影片" '
+    + 'style="background-image:url(https://i.ytimg.com/vi/' + vid + '/hqdefault.jpg)">'
+    + '<span class="yt-play"></span></button>';
+  box.querySelector('.yt-lite').addEventListener('click', function(){
+    box.innerHTML = '<iframe src="https://www.youtube.com/embed/' + box.dataset.vid
+      + '?autoplay=1&rel=0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen loading="lazy"></iframe>';
+  });
 }
-async function loadLatest(iframeId, chan){
-  const el = document.getElementById(iframeId); if(!el) return;
-  try{
-    const vid = await ytLatestId(chan.id);
-    el.src = 'https://www.youtube.com/embed/' + vid + '?rel=0';
-  }catch(e){
-    el.src = 'https://www.youtube.com/embed/videoseries?list=' + uploadsId(chan.id);
+// 背景嘗試用 CORS proxy 攞頻道最新片，成功就更新縮圖（否則沿用預設最新片）
+async function ytFeedLatest(url){
+  const proxies = [
+    u => 'https://api.codetabs.com/v1/proxy/?quest=' + u,
+    u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u),
+    u => 'https://r.jina.ai/' + u
+  ];
+  for(const mk of proxies){
+    try{
+      const ctl = new AbortController(); const to = setTimeout(()=>ctl.abort(), 8000);
+      const r = await fetch(mk(url), {cache:'no-store', signal: ctl.signal});
+      const t = await r.text(); clearTimeout(to);
+      const m = t.match(/<yt:videoId>([^<]+)<\/yt:videoId>/) || t.match(/watch\?v=([\w-]{11})/);
+      if(m) return m[1];
+    }catch(e){}
+  }
+  return null;
+}
+async function ytRefresh(iframeId, feedUrl){
+  const box = (document.getElementById(iframeId)||{}).closest ? document.getElementById(iframeId).closest('.yt-embed') : null;
+  const host = document.getElementById(iframeId) ? document.getElementById(iframeId).closest('.yt-embed') : null;
+  if(!host) return;
+  const vid = await ytFeedLatest(feedUrl);
+  const lite = host.querySelector('.yt-lite');
+  if(vid && lite && host.dataset.vid !== vid){
+    host.dataset.vid = vid;
+    lite.style.backgroundImage = 'url(https://i.ytimg.com/vi/' + vid + '/hqdefault.jpg)';
   }
 }
 var _ccn = document.getElementById('ytf-name-1'); if(_ccn) _ccn.textContent = CONFIG.youtube.ccnews.name;
 var _bbn = document.getElementById('ytf-name-2'); if(_bbn) _bbn.textContent = CONFIG.youtube.wealthbb.name;
-loadLatest('ytf-1', CONFIG.youtube.ccnews);
-loadLatest('ytf-2', CONFIG.youtube.wealthbb);
-loadLatest('yt-bb', CONFIG.youtube.wealthbb);
+// 即時掛上預設最新片
+ytMount('ytf-1', CONFIG.youtube.ccnews.latest);
+ytMount('ytf-2', CONFIG.youtube.wealthbb.latest);
+ytMount('yt-bb', CONFIG.youtube.wealthbb.latest);
+// 背景刷新（成功就更新為最新）
+var _yf = 'https://www.youtube.com/feeds/videos.xml?channel_id=';
+ytRefresh('ytf-1', _yf + CONFIG.youtube.ccnews.id);
+ytRefresh('ytf-2', _yf + CONFIG.youtube.wealthbb.id);
+ytRefresh('yt-bb', _yf + CONFIG.youtube.wealthbb.id);
 
 // ---- RSS helper: fetch raw feed via CORS proxy, parse XML ----
 async function fetchViaProxy(url){
