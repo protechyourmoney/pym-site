@@ -311,7 +311,7 @@
 <script>
 const CONFIG = {
   youtube: {
-    ccnews:   { id: "UCVZTkv6LM-_xWUM9t-jS5JA", name: "CC 新聞 · CC News", latest: "YMFpq59ZGqc" },
+    ccnews:   { id: "UCVZTkv6LM-_xWUM9t-jS5JA", name: "CC 新聞 · CC News", latest: "HkJHVv2Uhas" },
     wealthbb: { id: "UCVhbVP8jiQcGhfUM5ZR6Gvw", name: "財富BB班 · Calvin Wine", latest: "SJsGO73ftbE" },
     rongshu:  { playlist: "PLUXfng5J89fKh7_ZGVlOXvUziem95P4jd", name: "榕樹頭講股", latest: "tgQcCx1DVXQ" }
   },
@@ -1495,7 +1495,7 @@ function ytMount(iframeId, vid){
   });
 }
 // 背景嘗試用 CORS proxy 攞頻道最新片，成功就更新縮圖（否則沿用預設最新片）
-async function ytFeedLatest(url){
+async function ytFeedLatest(url, exclude){
   const proxies = [
     u => 'https://api.codetabs.com/v1/proxy/?quest=' + u,
     u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u),
@@ -1506,17 +1506,27 @@ async function ytFeedLatest(url){
       const ctl = new AbortController(); const to = setTimeout(()=>ctl.abort(), 8000);
       const r = await fetch(mk(url), {cache:'no-store', signal: ctl.signal});
       const t = await r.text(); clearTimeout(to);
+      const entries = t.match(/<entry>[\s\S]*?<\/entry>/g);
+      if(entries){
+        for(const e of entries){
+          const idm = e.match(/<yt:videoId>([^<]+)<\/yt:videoId>/);
+          if(!idm) continue;
+          const tm = e.match(/<media:title>([^<]+)<\/media:title>/) || e.match(/<title>([^<]+)<\/title>/);
+          const title = tm ? tm[1] : '';
+          if(exclude && exclude.test(title)) continue;   // 跳過不合主題（例：CC生活）
+          return idm[1];
+        }
+      }
       const m = t.match(/<yt:videoId>([^<]+)<\/yt:videoId>/) || t.match(/watch\?v=([\w-]{11})/);
       if(m) return m[1];
     }catch(e){}
   }
   return null;
 }
-async function ytRefresh(iframeId, feedUrl){
-  const box = (document.getElementById(iframeId)||{}).closest ? document.getElementById(iframeId).closest('.yt-embed') : null;
+async function ytRefresh(iframeId, feedUrl, exclude){
   const host = document.getElementById(iframeId) ? document.getElementById(iframeId).closest('.yt-embed') : null;
   if(!host) return;
-  const vid = await ytFeedLatest(feedUrl);
+  const vid = await ytFeedLatest(feedUrl, exclude);
   const img = host.querySelector('.yt-thumb');
   if(vid && img && host.dataset.vid !== vid){
     host.dataset.vid = vid;
@@ -1531,7 +1541,7 @@ ytMount('ytf-2', CONFIG.youtube.wealthbb.latest);
 ytMount('yt-bb', CONFIG.youtube.wealthbb.latest);
 // 背景刷新（成功就更新為最新）
 var _yf = 'https://www.youtube.com/feeds/videos.xml?channel_id=';
-ytRefresh('ytf-1', _yf + CONFIG.youtube.ccnews.id);
+ytRefresh('ytf-1', _yf + CONFIG.youtube.ccnews.id, /CC生活/);
 ytRefresh('ytf-2', _yf + CONFIG.youtube.wealthbb.id);
 ytRefresh('yt-bb', _yf + CONFIG.youtube.wealthbb.id);
 
