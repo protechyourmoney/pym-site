@@ -1026,6 +1026,15 @@ const TOOLS = [
   </div>
 </section>
 
+<!-- 今日新聞圖 -->
+<section class="block t-pym" id="dailycard">
+  <div class="wrap">
+    <div class="sec-head"><h2><span class="kicker">每日一圖 · DAILY CARD</span>今日新聞圖</h2><span class="more">可右鍵儲存分享</span></div>
+    <a id="dailycard-link" href="assets/news/latest.png" target="_blank" rel="noopener"><img id="dailycard-img" src="assets/news/latest.png" alt="PYM 今日新聞圖" style="width:100%;max-width:620px;border-radius:16px;border:1px solid var(--line);display:block"></a>
+    <script>(function(){var d=new Date();var v=d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');var s='assets/news/latest.png?v='+v;var i=document.getElementById('dailycard-img'),a=document.getElementById('dailycard-link');if(i)i.src=s;if(a)a.href=s;})();</script>
+  </div>
+</section>
+
 <!-- LATEST PYM NEWS -->
 <section class="block t-pym" id="news" style="border-top:0;padding-top:8px">
   <div class="wrap">
