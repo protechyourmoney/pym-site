@@ -303,6 +303,7 @@
   .gym-cell .gc-t{font-size:14px;font-weight:600;color:#dff5ec}
   .yt-embed-wide{max-width:760px;padding-top:0;aspect-ratio:16/9}
   body.view-gym .theme-switch .ts-btn[data-view="gym"].active{box-shadow:inset 0 0 0 2px rgba(52,211,153,.5)}
+  .subhead{margin:30px 0 14px;font-size:21px;font-weight:800;color:var(--gold);border-left:4px solid var(--gold);padding-left:12px;scroll-margin-top:130px}
 </style>
 </head>
 <body class="view-pym">
@@ -945,7 +946,13 @@ const TOOLS = [
         </span>
       </span>
       <a href="#about">甚麼是 PYM</a>
-      <a href="#hknews">香港新聞</a>
+      <span class="dd">
+        <a href="#hknews">香港新聞 ▾</a>
+        <span class="dd-menu">
+          <a href="#hknews">全部香港</a>
+          <a href="#hk-property">🏠 樓市新聞</a>
+        </span>
+      </span>
       <a href="#cnnews">中國新聞</a>
       <a href="#usnews">美國新聞</a>
       <span class="dd">
@@ -1102,6 +1109,8 @@ const TOOLS = [
   <div class="wrap">
     <div class="sec-head"><h2><span class="kicker">HONG KONG · 香港</span>香港新聞</h2><span class="more">PYM 相關 · 香港</span></div>
     <div id="hk-news"></div>
+    <h3 class="subhead" id="hk-property">🏠 樓市新聞</h3>
+    <div id="hk-property-list"></div>
   </div>
 </section>
 <section class="block t-pym" id="cnnews">
@@ -1329,11 +1338,12 @@ function riskThumb(n){
     <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${v.i}</svg>
   </div>`;
 }
-function renderNews(elId, region){
+function renderNews(elId, region, extra){
   const el = document.getElementById(elId); if(!el) return;
   const dotColor = r => (RISK_VIS[r]||{}).c || '#e3b341';
   let list = PYMNEWS.slice().sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
   if(region) list = list.filter(n=>n.region===region);
+  if(typeof extra==='function') list = list.filter(extra);
   if(!list.length){ el.innerHTML = '<div class="loading">暫無相關新聞。</div>'; return; }
   el.innerHTML = '<div class="ptl">' + list.map(n=>`
     <div class="ptl-item">
@@ -1346,6 +1356,7 @@ function renderNews(elId, region){
 }
 renderNews('pnews');
 renderNews('hk-news','香港');
+renderNews('hk-property-list','香港', n=>/樓市|地產|銀主|物業|樓價|居屋/.test((n.tag||'')+(n.title||'')));
 renderNews('cn-news','中國');
 renderNews('us-news','美國');
 
