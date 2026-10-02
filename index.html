@@ -969,28 +969,18 @@ const TOOLS = [
     </a>
     <nav class="menu">
       <span class="dd">
-        <a href="#news">最新內容 ▾</a>
+        <a href="#news">PYM 新聞 ▾</a>
         <span class="dd-menu">
-          <a href="#news">全部新聞</a>
-          <a href="#hknews">香港新聞</a>
-          <a href="#cnnews">中國新聞</a>
-          <a href="#usnews">美國新聞</a>
+          <a href="#news">最新 PYM 新聞</a>
+          <a href="#hk-property">🏠 樓市新聞</a>
           <a href="#showsmedia">節目／影片</a>
-          <a href="#articles">文章</a>
+          <a href="#articles">深度文章</a>
         </span>
       </span>
+      <a href="#news">PYM 新聞</a>
       <a href="#about">甚麼是 PYM</a>
       <span class="dd">
-        <a href="#hknews">香港新聞 ▾</a>
-        <span class="dd-menu">
-          <a href="#hknews">全部香港</a>
-          <a href="#hk-property">🏠 樓市新聞</a>
-        </span>
-      </span>
-      <a href="#cnnews">中國新聞</a>
-      <a href="#usnews">美國新聞</a>
-      <span class="dd">
-        <a href="#usstocks">投資理財 ▾</a>
+        <a href="#usstocks">GYM 理財增值 ▾</a>
         <span class="dd-menu">
           <a href="#earnings">美股業績</a>
           <a href="#analysis">美股分析・新聞</a>
@@ -1082,6 +1072,18 @@ const TOOLS = [
   </div>
 </section>
 
+<section class="block t-pym" id="news" style="border-top:0;padding-top:8px">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2><span class="kicker">突發 · 避險視角</span>最新 PYM 相關新聞</h2>
+      <span class="more">人手精選 · 標註對應 PYM 風險</span>
+    </div>
+    <div class="pnews" id="pnews"></div>
+  </div>
+    <h3 class="subhead" id="hk-property">🏠 樓市新聞</h3>
+    <div id="hk-property-list"></div>
+</section>
+
 <!-- FEATURED LATEST VIDEOS -->
 <section class="block t-pym" id="featured" style="border-top:0;padding-top:6px">
   <div class="wrap">
@@ -1114,15 +1116,7 @@ const TOOLS = [
 </section>
 
 <!-- LATEST PYM NEWS -->
-<section class="block t-pym" id="news" style="border-top:0;padding-top:8px">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2><span class="kicker">突發 · 避險視角</span>最新 PYM 相關新聞</h2>
-      <span class="more">人手精選 · 標註對應 PYM 風險</span>
-    </div>
-    <div class="pnews" id="pnews"></div>
-  </div>
-</section>
+
 
 <!-- WHAT IS PYM -->
 <section class="block t-pym" id="about">
@@ -1139,26 +1133,9 @@ const TOOLS = [
 
 <!-- SHOWS + MEDIA (merged) -->
 <!-- REGION NEWS -->
-<section class="block t-pym" id="hknews">
-  <div class="wrap">
-    <div class="sec-head"><h2><span class="kicker">HONG KONG · 香港</span>香港新聞</h2><span class="more">PYM 相關 · 香港</span></div>
-    <div id="hk-news"></div>
-    <h3 class="subhead" id="hk-property">🏠 樓市新聞</h3>
-    <div id="hk-property-list"></div>
-  </div>
-</section>
-<section class="block t-pym" id="cnnews">
-  <div class="wrap">
-    <div class="sec-head"><h2><span class="kicker">CHINA · 中國</span>中國新聞</h2><span class="more">PYM 相關 · 中國</span></div>
-    <div id="cn-news"></div>
-  </div>
-</section>
-<section class="block t-pym" id="usnews">
-  <div class="wrap">
-    <div class="sec-head"><h2><span class="kicker">USA · 美國</span>美國新聞</h2><span class="more">PYM 相關 · 美國</span></div>
-    <div id="us-news"></div>
-  </div>
-</section>
+
+
+
 
 <!-- 李嘉誠動向 (PYM) -->
 <section class="block t-pym" id="lks">
@@ -1203,7 +1180,7 @@ const TOOLS = [
 <section class="block t-gym" id="usstocks">
   <div class="wrap">
     <div class="sec-head">
-      <h2><span class="kicker">US STOCKS · 投資理財</span>投資理財</h2>
+      <h2><span class="kicker">GYM · GROW YOUR MONEY</span>GYM 理財增值</h2>
       <span class="more">投資相關內容整理 · 分類及時序</span>
     </div>
 
@@ -1389,10 +1366,7 @@ function renderNews(elId, region, extra){
     </div>`).join('') + '</div>';
 }
 renderNews('pnews');
-renderNews('hk-news','香港');
-renderNews('hk-property-list','香港', n=>/樓市|地產|銀主|物業|樓價|居屋/.test((n.tag||'')+(n.title||'')));
-renderNews('cn-news','中國');
-renderNews('us-news','美國');
+renderNews('hk-property-list', null, n=>/樓市|地產|銀主|物業|樓價|居屋/.test((n.tag||'')+(n.title||'')));
 
 // ---- 會友 QA（可搜尋）----
 const QA = [
