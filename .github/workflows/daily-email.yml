@@ -1,0 +1,21 @@
+name: daily-pym-email
+on:
+  schedule:
+    - cron: '0 1 * * *'    # 01:00 UTC = 香港早上 09:00（網站 07:30 更新後）
+  workflow_dispatch:         # 可喺 GitHub 手動 Run
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install system deps (cairo for cairosvg)
+        run: sudo apt-get update && sudo apt-get install -y libcairo2
+      - run: pip install "qrcode[pil]" cairosvg
+      - name: Send daily email
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: python scripts/daily_email.py
