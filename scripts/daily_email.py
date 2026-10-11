@@ -13,9 +13,12 @@ RECIPIENTS = ["chchoy@gmail.com", "alex.shum.1992@gmail.com",
               "enochhuenhk@gmail.com", "cchong0965@gmail.com"]
 SITE = "https://protectyourmoney.co"
 
-GU = os.environ.get("GMAIL_USER"); GP = os.environ.get("GMAIL_APP_PASSWORD")
+GU = (os.environ.get("GMAIL_USER") or "").strip()
+# App password 係 16 個字母、無空格;清走所有空白字元(空格/tab/換行),避免 AUTH 指令損壞
+GP = "".join((os.environ.get("GMAIL_APP_PASSWORD") or "").split())
 if not GU or not GP:
     print("ERROR: 缺少 GMAIL_USER / GMAIL_APP_PASSWORD secret"); sys.exit(1)
+print(f"smtp user={GU} | app-password length={len(GP)} (應為 16)")
 
 html_src = open("index.html", encoding="utf-8").read()
 m = re.search(r'const PYMNEWS = \[(.*?)\n\];', html_src, re.S)
