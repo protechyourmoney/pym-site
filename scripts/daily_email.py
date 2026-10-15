@@ -58,14 +58,32 @@ for p in picked:
         f'<div style="margin-top:8px"><a href="{esc(p["url"])}" style="color:#a67c00;font-size:13px">原文 →</a></div></div>')
     rows_txt.append(f"[{p['region']}·風險{p['risk']}] {p['title']}\n{p['summary']}\n原文:{p['url']}\n")
 
+# ---- 生成 social media post(可直接 copy 出)----
+NUMS = ["1⃣","2⃣","3⃣","4⃣","5⃣"]
+_hash = {"香港":"#香港經濟","中國":"#中國經濟","美國":"#美國經濟"}
+_tags = ["#PYM","#避險","#資產配置"] + sorted({_hash.get(p["region"],"") for p in picked if _hash.get(p["region"])})
+post_lines = [f"🛡️ PYM 風險快訊｜{label}焦點", ""]
+for i,p in enumerate(picked):
+    post_lines.append(f"{NUMS[i]} {p['region']}・風險{p['risk']}｜{p['title']}")
+post_lines += ["", "要增值，先避險 👉 protectyourmoney.co", "",
+               "📺 深入分析睇 PYM Patreon:",
+               "・財富BB班 patreon.com/wealthclub",
+               "・CC工作室 patreon.com/calvinwine", "",
+               " ".join(_tags)]
+social_post = "\n".join(post_lines)
+print("---- SOCIAL POST ----\n"+social_post+"\n--------------------")
+
 html_body = (
     f'<div style="max-width:640px;margin:0 auto;font-family:sans-serif">'
     + ('<img src="cid:poster" style="width:100%;border-radius:12px;margin-bottom:18px">' if poster_ok else '')
     + f'<h2 style="color:#2b2b2b">PYM {label}避險新聞摘要 — {TODAY_S}</h2>'
     + ''.join(rows_html)
     + f'<div style="text-align:center;margin:24px 0"><a href="{SITE}" style="background:#a67c00;color:#fff;padding:12px 26px;border-radius:8px;text-decoration:none;font-weight:700">睇更多 → protectyourmoney.co</a></div>'
+    + '<div style="margin:22px 0 6px;font-size:13px;font-weight:700;color:#a67c00">📱 今日 Social Post（可直接 copy）</div>'
+    + f'<pre style="white-space:pre-wrap;word-break:break-word;background:#faf7f0;border:1px solid #e4ddcf;border-radius:10px;padding:14px;font-family:inherit;font-size:13.5px;color:#2b2b2b;line-height:1.7">{esc(social_post)}</pre>'
     + '<div style="color:#999;font-size:12px;text-align:center">要增值，先避險 · protectyourmoney.co</div></div>')
 txt_body = f"PYM {label}避險新聞摘要 — {TODAY_S}\n\n" + "\n".join(rows_txt) + f"\n睇更多:{SITE}\n"
+txt_body += "\n\n===== 今日 Social Post（可直接 copy）=====\n" + social_post + "\n"
 
 msg = MIMEMultipart('related')
 msg['Subject'] = f"PYM 每日避險新聞摘要 — {TODAY_S}"
