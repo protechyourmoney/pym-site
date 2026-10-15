@@ -37,6 +37,18 @@ picked = recent if recent else items[:3]
 label = "今日" if recent else "近期"
 print(f"picked {len(picked)} items ({'recent' if recent else 'fallback newest'})")
 
+# 確保雲端 runner 有中文字型(GitHub Actions 預設冇 CJK 字型,否則圖中文會變方格)
+try:
+    import shutil
+    if not shutil.which("fc-list") or b"CJK" not in subprocess.run(["bash","-lc","fc-list | grep -i cjk || true"], capture_output=True).stdout:
+        subprocess.run(["sudo","apt-get","install","-y","-q","fonts-noto-cjk"], check=False, timeout=180)
+        subprocess.run(["fc-cache","-f"], check=False, timeout=60)
+        print("installed fonts-noto-cjk")
+    else:
+        print("CJK font already present")
+except Exception as _e:
+    print("font install skipped:", _e)
+
 # 生成標題圖
 poster_ok = False
 try:
