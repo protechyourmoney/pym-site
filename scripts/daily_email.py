@@ -97,6 +97,16 @@ if poster_ok:
     img.add_header('Content-Disposition','inline', filename='pym-daily.png'); msg.attach(img)
 
 ctx = ssl.create_default_context()
-with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=ctx) as s:
-    s.login(GU, GP); s.sendmail(GU, RECIPIENTS, msg.as_string())
+def _send_465():
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=ctx, timeout=30) as s:
+        s.login(GU, GP); s.sendmail(GU, RECIPIENTS, msg.as_string())
+def _send_587():
+    with smtplib.SMTP("smtp.gmail.com", 587, timeout=30) as s:
+        s.ehlo(); s.starttls(context=ctx); s.ehlo()
+        s.login(GU, GP); s.sendmail(GU, RECIPIENTS, msg.as_string())
+try:
+    _send_465(); print("sent via 465 SSL")
+except Exception as e1:
+    print(f"465 失敗({type(e1).__name__}: {e1})，改試 587 STARTTLS...")
+    _send_587(); print("sent via 587 STARTTLS")
 print(f"email sent to {len(RECIPIENTS)} recipients; poster={'yes' if poster_ok else 'no'}")
