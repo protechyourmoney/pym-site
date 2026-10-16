@@ -304,6 +304,24 @@
   .yt-embed-wide{max-width:760px;padding-top:0;aspect-ratio:16/9}
   body.view-gym .theme-switch .ts-btn[data-view="gym"].active{box-shadow:inset 0 0 0 2px rgba(52,211,153,.5)}
   .subhead{margin:30px 0 14px;font-size:21px;font-weight:800;color:var(--gold);border-left:4px solid var(--gold);padding-left:12px;scroll-margin-top:130px}
+
+  /* ===== 首頁改版:影片 grid + CTA ===== */
+  .cta-bar{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:4px 0 24px}
+  .cta-btn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:13px 24px;border-radius:12px;font-weight:800;font-size:15px;text-decoration:none;transition:.15s;color:#fff;text-align:center}
+  .cta-btn small{font-weight:600;opacity:.9;font-size:11px;letter-spacing:.5px}
+  .cta-yt{background:#ff0000}
+  .cta-pt{background:#f1465b}
+  .cta-btn:hover{filter:brightness(1.08);transform:translateY(-2px)}
+  .vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:860px){.vgrid{grid-template-columns:1fr}}
+  .vcard{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:.15s}
+  .vcard:hover{border-color:var(--gold);transform:translateY(-3px)}
+  .vthumb{position:relative;aspect-ratio:16/9;background:#000}
+  .vthumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .vplay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+  .vplay::after{content:"\25B6";color:#fff;font-size:26px;background:rgba(0,0,0,.55);width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;padding-left:4px}
+  .vcard:hover .vplay::after{background:#ff0000}
+  .vtitle{padding:12px 14px;font-weight:700;font-size:14.5px;line-height:1.45}
 </style>
 </head>
 <body class="view-pym">
@@ -1200,17 +1218,23 @@ const TOOLS = [
   </div>
 </section>
 
-<section class="block t-pym" id="news" style="border-top:0;padding-top:8px">
+<!-- TOP: 最新影片 + 訂閱 CTA -->
+<section class="block t-pym" id="watch" style="border-top:0;padding-top:12px">
   <div class="wrap">
     <div class="sec-head">
-      <h2><span class="kicker">突發 · 避險視角</span>最新 PYM 相關新聞</h2>
-      <span class="more">人手精選 · 標註對應 PYM 風險</span>
+      <h2><span class="kicker">▶ WATCH · 最新</span>最新 PYM 節目／影片</h2>
+      <a class="more" href="#showsmedia">看晒全部 →</a>
     </div>
-    <div class="pnews" id="pnews"></div>
+    <div class="cta-bar">
+      <a class="cta-btn cta-yt" href="https://youtube.com/@ccnewshk?sub_confirmation=1" target="_blank" rel="noopener">▶ 訂閱 CC新聞<small>YouTube</small></a>
+      <a class="cta-btn cta-yt" href="https://youtube.com/@wealthbb?sub_confirmation=1" target="_blank" rel="noopener">▶ 訂閱 財富BB班<small>YouTube</small></a>
+      <a class="cta-btn cta-pt" href="https://www.patreon.com/calvinchoy" target="_blank" rel="noopener">★ CC工作室<small>Patreon</small></a>
+      <a class="cta-btn cta-pt" href="https://www.patreon.com/wealthclub" target="_blank" rel="noopener">★ 財富BB班<small>Patreon</small></a>
+    </div>
+    <div class="vgrid" id="topvideos"></div>
   </div>
-    <h3 class="subhead" id="hk-property">🏠 樓市新聞</h3>
-    <div id="hk-property-list"></div>
 </section>
+
 
 <!-- FEATURED LATEST VIDEOS -->
 <section class="block t-pym" id="featured" style="border-top:0;padding-top:6px">
@@ -1290,6 +1314,18 @@ const TOOLS = [
 </section>
 
 <!-- SUBSTACK -->
+<section class="block t-pym" id="news" style="border-top:0;padding-top:8px">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2><span class="kicker">突發 · 避險視角</span>最新 PYM 相關新聞</h2>
+      <span class="more">人手精選 · 標註對應 PYM 風險</span>
+    </div>
+    <div class="pnews" id="pnews"></div>
+  </div>
+    <h3 class="subhead" id="hk-property">🏠 樓市新聞</h3>
+    <div id="hk-property-list"></div>
+</section>
+
 <section class="block t-pym" id="articles">
   <div class="wrap">
     <div class="sec-head">
@@ -1477,12 +1513,13 @@ function riskThumb(n){
     <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${v.i}</svg>
   </div>`;
 }
-function renderNews(elId, region, extra){
+function renderNews(elId, region, extra, limit){
   const el = document.getElementById(elId); if(!el) return;
   const dotColor = r => (RISK_VIS[r]||{}).c || '#e3b341';
   let list = PYMNEWS.slice().sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
   if(region) list = list.filter(n=>n.region===region);
   if(typeof extra==='function') list = list.filter(extra);
+  if(limit) list = list.slice(0, limit);
   if(!list.length){ el.innerHTML = '<div class="loading">暫無相關新聞。</div>'; return; }
   el.innerHTML = '<div class="ptl">' + list.map(n=>`
     <div class="ptl-item">
@@ -1493,7 +1530,7 @@ function renderNews(elId, region, extra){
       <div class="ptl-src">來源：${n.source}</div>
     </div>`).join('') + '</div>';
 }
-renderNews('pnews');
+renderNews('pnews', null, null, 6);
 renderNews('hk-property-list', null, n=>/樓市|地產|銀主|物業|樓價|居屋/.test((n.tag||'')+(n.title||'')));
 
 // ---- 會友 QA（可搜尋）----
@@ -1856,6 +1893,19 @@ function setLang(l){
     timer = setInterval(()=>heroCarouselNav(1), 6000);
   }
   if(track && slides > 1){ render(); resetAuto(); }
+})();
+</script>
+<script>
+(function(){
+  var box=document.getElementById('topvideos');
+  if(!box||typeof CLIPS==='undefined')return;
+  box.innerHTML=CLIPS.slice(0,6).map(function(c){
+    var id=(typeof ytId==='function')?ytId(c.url):'';
+    var th=id?('https://i.ytimg.com/vi/'+id+'/hqdefault.jpg'):'';
+    return '<a class="vcard" href="'+c.url+'" target="_blank" rel="noopener">'+
+      '<div class="vthumb">'+(th?'<img src="'+th+'" alt="" loading="lazy">':'')+'<span class="vplay"></span></div>'+
+      '<div class="vtitle">'+(c.t||'')+'</div></a>';
+  }).join('');
 })();
 </script>
 </body>
