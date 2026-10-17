@@ -357,6 +357,22 @@ const RISKS = [
 
 // ---- 最新 PYM 相關新聞（人手精選；risk 對應「甚麼是 PYM」七大風險）----
 const PYMNEWS = [
+  {risk:4, tag:"人民幣國際化", region:"中國", date:"2026-10-17", source:"商業電台",
+   title:"中國加速推進人民幣國際化",
+   url:"https://news.google.com/rss/articles/CBMiU0FVX3lxTE9mV1RsWEdONzB6cTI3QXlQNzJsTjZoV1ZZUFBZYW1RYUVlaFpsRzd5ZTF4Zkh4X05nN1dMRzMzMkR5U0JjSkVlZ2FyRXM1S3c1NkQ00gFYQVVfeXFMTTNmbS05ZUgtNE1PdUJ0VzM3XzBUM29sLTk0YzVpa0RGZ1VYSEFYc0s1X0NkZ2V0ZlJ0cURHeHlSX3FpcGpJdGtpWkxobkdQSjVjR0dBRXZ2ZA?oc=5",
+   summary:"中國推動人民幣國際化，加速推進人民幣債券國際認可。此舉旨在提升人民幣在全球金融體系中的地位，為跨境資金流動創造新機制。"},
+  {risk:5, tag:"資本管制 · 離岸稅", region:"中國", date:"2026-10-17", source:"鉅亨網",
+   title:"中國追稅風暴延燒新加坡 富豪加緊盤點離岸信託",
+   url:"https://news.google.com/rss/articles/CBMiT0FVX3lxTE9QMEdkTURqTzdWTnE4SnNBRUtRVUlBTXNvWktXakhWeTZiMk9Fc29uWmxabWQtRndkSm1MdUVwTzFKV3YzaEdpVU92T3liaXM?oc=5",
+   summary:"中國對離岸信託課稅20%，申報期限至10月22日。富豪加緊清點離岸資產，反映走資管制政策升級。"},
+  {risk:4, tag:"匯率風險", region:"中國", date:"2026-10-17", source:"明報新聞網",
+   title:"IMF：內需疲弱令人民幣匯率被低估",
+   url:"https://news.google.com/rss/articles/CBMisAJBVV95cUxOVTRkQTQ4YVl2R3puVkFBelF0VEdrdEkwdlBtZkhxdWNPSy1uRWU4RElQRmI3amJnVEZBeWFkVTJsOXNYakZqT1p3eVhhM0ZsNW9MWE9yc09SeXBJeHpRcFg0RFFTUmc5RjBXUzNqcDFBOWozR19lT281ZHh6NXJIZkdjSUh1Vl9wN3dxTFIzSjNsMFR0a0RReno3cXBKOF9YZTVyQlJzUS1aNENCd0huN2dlY2VNTEZScllFdS01amlnd0NJU1dNZGs3Ym5hWEpQeVNOckJGNjcxT2l3dWM5dFlwZE1iazExdVpTclY4Y3o0Z2lMM2dEbnVYcVZsQmxYaXZSUzAtblhmM3pqWWhzd0hSeE1nX0YyRDJPbkdoMlY3TUx2a2d2M3JINTU0RFFF?oc=5",
+   summary:"IMF指中國內需疲弱導致人民幣實際匯率被低估，認為現有刺激措施力度遠遠不夠。此評估對投資人民幣資產者構成匯率風險警示。"},
+  {risk:2, tag:"流動性 · 房企融資", region:"香港", date:"2026-10-17", source:"大紀元時報香港",
+   title:"彭博：新世界擬延長880億元貸款兩年 為供股鋪路",
+   url:"https://news.google.com/rss/articles/CBMiX0FVX3lxTE5PejFXaVIwY0FFWS13VXI5ZHFMZ1hwR09QaVNqN2NVOG40dmowdVhsZVBQV3RoSHVrWUZNUDdtbm5CVWFyWDliQTFwTDZuWEFGYVE3TTVYWnFTSDNqNTZV?oc=5",
+   summary:"新世界擬延長880億元貸款償還期兩年，為後續供股融資騰出空間。此舉反映香港房企流動性壓力下的融資調整。"},
   {risk:4, tag:"人民幣匯率", region:"中國", date:"2026-10-16", source:"星島頭條",
    title:"IMF警告AI熱潮降溫加劇亞太區經濟下行風險 料人民幣仍低估",
    url:"https://news.google.com/rss/articles/CBMijANBVV95cUxQRWRWbG9fYUZYeVBNVlJ0RVoxYTNBNWRPVnJlSkxuelpSUEhCaDRqbG5nOGdlU0xnNzN2a2xVMHQ4M1lFOUdIVjVHeWhETFNDMUk5SjJaenJwUFdGM3NvSjFTZlhsZ2lDZkV0WEM4ekVCZzYtNUtVdWFINHRNc2tDYnM5OVZROWlCVDFwbThtZXhMeU9IQnhYX1dQeENNMUdKVnZCTmFfbnJwT3dVNXRTeEEwR3FnZmZoWnhfZWhQTjg0eUxQdHhwNTdWZnRTSS1TZDh2bHVrb3pGRWxaQWpmWFFDZzdpTG5VWURvVEw4WE8xZU9vVlYtTF9tV3VQSnN3NDlFWWtXWU1ySUJDXzg1SHZoRnBHa0pHcHEySXY2QkpxbjBrVjc4UWxHTnhJRDRIOEVZUEY2NnU4WG92MVY3YkdQUXExamFrSXJnM2pVTExGRnpCNXJTWExUQzQ3YmxySGpoSFNIYXhEdVlPTHhwT3I5a0RlbTdpX09pOGZZaUw2NmZ6SnFxM21WYkw?oc=5",
