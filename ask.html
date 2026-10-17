@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="zh-Hant-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>問 Calvin｜PYM 理財避險問答</title>
+<meta name="description" content="理財、投資、避險問題，即時配對《財富BB班》《CC新聞》節目同 Patreon 會員內容；搵唔到答案就直接交俾 Calvin。">
+<meta property="og:title" content="問 Calvin：你嘅錢，應該睇邊集？">
+<meta property="og:description" content="港元、美債、黃金、走資、保單、MPF……揀一條問題，搵最啱你嘅節目。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+HK:wght@600;900&family=Noto+Sans+HK:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a single reading column like a bank passbook — question slip on top, answer ledger below */
+:root{
+  --bg:#eef1ee; --paper:#fbfcfa; --ink:#14211d; --muted:#5b6b65; --line:#cfd8d3;
+  --accent:#0d5c4a; --accent-ink:#ffffff; --gold:#a8741a; --warn:#9b3b22; --chip:#e2e9e5;
+  --yt:#b3261e; --pt:#2b4bb3;
+  --display:"Noto Serif HK","Songti TC",serif;
+  --body:"Noto Sans HK","PingFang HK","Microsoft JhengHei",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1715; --paper:#16211e; --ink:#e6eeea; --muted:#9aaca5; --line:#2b3a35;
+  --accent:#4cbf9c; --accent-ink:#06231b; --gold:#d9a548; --warn:#e9876b; --chip:#1f2c28;
+  --yt:#ff7a70; --pt:#8fa6ff; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1715; --paper:#16211e; --ink:#e6eeea; --muted:#9aaca5; --line:#2b3a35;
+  --accent:#4cbf9c; --accent-ink:#06231b; --gold:#d9a548; --warn:#e9876b; --chip:#1f2c28;
+  --yt:#ff7a70; --pt:#8fa6ff; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.7 var(--body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+header{display:flex;flex-direction:column;gap:6px}
+.eyebrow{font:500 12px/1 var(--mono);letter-spacing:.12em;color:var(--gold);text-transform:uppercase}
+h1{font:900 clamp(30px,6vw,44px)/1.15 var(--display);margin:0;text-wrap:balance}
+.lede{color:var(--muted);margin:0;max-width:60ch}
+.slip{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.slip label{font-weight:700}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+textarea{flex:1 1 260px;min-width:0;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:10px 12px;resize:vertical;min-height:52px}
+textarea:focus,button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button{font:inherit;cursor:pointer;border-radius:4px}
+.ask{background:var(--accent);color:var(--accent-ink);border:0;padding:10px 22px;font-weight:700;align-self:stretch}
+.ask:disabled{opacity:.5;cursor:default}
+.meta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.meta b{font:500 13px var(--mono);color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--chip);border:1px solid transparent;color:var(--ink);padding:6px 12px;font-size:14px;line-height:1.4;text-align:left}
+.chip:hover{border-color:var(--accent)}
+.chip.done{opacity:.55}
+.ledger{display:flex;flex-direction:column;gap:22px}
+.entry{display:flex;flex-direction:column;gap:12px;border-top:2px solid var(--ink);padding-top:14px}
+.q{font:600 20px/1.45 var(--display);margin:0;text-wrap:balance}
+.qno{font:500 12px var(--mono);color:var(--muted);letter-spacing:.08em}
+.say{margin:0;color:var(--ink)}
+.say.thinking{color:var(--muted)}
+.vids{display:flex;flex-direction:column;gap:0;border:1px solid var(--line);border-radius:6px;background:var(--paper);overflow:hidden}
+.vid{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;padding:12px 14px;border-top:1px solid var(--line);text-decoration:none;color:inherit}
+.vid:first-child{border-top:0}
+.vid:hover{background:var(--chip)}
+.tag{grid-row:span 2;font:500 11px/1 var(--mono);letter-spacing:.06em;padding:6px 7px;border-radius:3px;border:1px solid currentColor;align-self:start;white-space:nowrap}
+.tag.yt{color:var(--yt)} .tag.pt{color:var(--pt)}
+.vt{font-weight:500;min-width:0;overflow-wrap:anywhere}
+.vs{font-size:13px;color:var(--muted);min-width:0}
+.vs em{font-style:normal;color:var(--accent)}
+.why{font-size:14px;color:var(--muted);margin:0}
+.patreon{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;background:var(--paper);border:1px dashed var(--pt);border-radius:6px;padding:14px}
+.patreon div{flex:1 1 240px;min-width:0}
+.patreon h3{margin:0;font:600 16px/1.4 var(--display)}
+.patreon p{margin:4px 0 0;font-size:14px;color:var(--muted)}
+.btn{display:inline-block;text-decoration:none;font-weight:700;font-size:14px;padding:8px 14px;border-radius:4px;border:1px solid var(--pt);color:var(--pt)}
+.btn.solid{background:var(--pt);color:var(--paper)}
+.miss{border:1px solid var(--warn);border-radius:6px;padding:14px;display:flex;flex-direction:column;gap:10px;background:var(--paper)}
+.miss h3{margin:0;font:600 16px var(--display);color:var(--warn)}
+.miss p{margin:0;font-size:14px}
+.addr{font:500 15px var(--mono);user-select:all;background:var(--chip);padding:4px 8px;border-radius:3px;overflow-wrap:anywhere}
+.ghost{background:none;border:1px solid var(--line);color:var(--ink);padding:6px 12px;font-size:14px}
+.nohelp{align-self:flex-start;background:none;border:0;color:var(--muted);text-decoration:underline;padding:0;font-size:14px}
+.channels{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));gap:10px}
+.ch{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:12px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:2px}
+.ch b{font:600 15px var(--display)}
+.ch span{font-size:12px;color:var(--muted)}
+.ch i{font:500 11px var(--mono);font-style:normal;letter-spacing:.06em}
+.ch.yt i{color:var(--yt)} .ch.pt i{color:var(--pt)}
+.back a{font-size:14px;color:var(--accent);text-decoration:none}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+footer{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+.empty{color:var(--muted);font-size:14px;border:1px dashed var(--line);border-radius:6px;padding:16px}
+@media (prefers-reduced-motion:no-preference){.entry{animation:in .35s ease-out both}@keyframes in{from{transform:translateY(6px);opacity:.4}to{transform:none;opacity:1}}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <nav class="back"><a href="/">← 返回 PYM 主頁</a></nav>
+  <header>
+    <span class="eyebrow">PYM · 財富BB班 · 理財避險問答</span>
+    <h1>問 Calvin：你嘅錢，應該睇邊集？</h1>
+    <p class="lede">揀一條問題，或者自己打。系統會由《財富BB班》、《CC新聞》兩個 YouTube 頻道同兩個 Patreon 會員區，搵出最啱你嘅節目。搵唔到？直接將問題交俾 Calvin，可能就係下一集嘅題目。</p>
+  </header>
+
+  <section class="slip" aria-label="提問">
+    <label for="qbox">你想問咩？</label>
+    <div class="row">
+      <textarea id="qbox" rows="2" placeholder="例如：港元脫鈎，我手上嘅港幣應該點部署？"></textarea>
+      <button class="ask" id="askBtn">搵答案</button>
+    </div>
+    <div class="meta"><span>每次最多問 <b>10</b> 條，今次已問 <b id="used">0</b> 條</span><span id="mode"></span></div>
+    <div class="chips" id="chips" aria-label="熱門問題"></div>
+  </section>
+
+  <section class="ledger" id="ledger" aria-live="polite">
+    <div class="empty" id="empty">撳上面任何一條熱門問題試吓。答案會列出相關節目，連去 YouTube 或 Patreon 直接睇。</div>
+  </section>
+
+  <section aria-label="頻道">
+    <div class="channels">
+      <a class="ch yt" href="https://www.youtube.com/@wealthbb?sub_confirmation=1" target="_blank" rel="noopener"><i>YOUTUBE</i><b>財富BB班</b><span>理財投資・債券・美股</span></a>
+      <a class="ch yt" href="https://www.youtube.com/@ccnewshk?sub_confirmation=1" target="_blank" rel="noopener"><i>YOUTUBE</i><b>CC新聞</b><span>新聞政評・PYM避險</span></a>
+      <a class="ch pt" href="https://www.patreon.com/wealthclub" target="_blank" rel="noopener"><i>PATREON</i><b>財富BB Club</b><span>完整版節目・會員Q&amp;A</span></a>
+      <a class="ch pt" href="https://www.patreon.com/calvinchoy" target="_blank" rel="noopener"><i>PATREON</i><b>CC工作室</b><span>會員節目・獨家系列</span></a>
+    </div>
+  </section>
+
+  <footer>本頁只會推介 Calvin 節目入面講過嘅內容，唔構成任何個人投資建議。投資涉及風險，決定前請按自己情況考慮或諮詢持牌顧問。</footer>
+</div>
+
+<script>
+const EMAIL="wealth@ccstudio.media";
+const LIMIT=10;
+const YT={w:{name:"財富BB班",url:"https://www.youtube.com/@wealthbb"},n:{name:"CC新聞",url:"https://www.youtube.com/@ccnewshk"}};
+// [videoId, channel, title, yyyy-mm]
+const V=[
+["jwqtV6d5KSM","w","《金融小記》261016－油價通脹不下，今年還要加息，長債息為何回調？","2026-10"],
+["b-D7yRzs50Y","w","《財富QA｜快問快答》Q188 Netflix(NFLX)低成本AI片取代？拆解串流平台護城河","2026-10"],
+["zIOfVr29UJM","w","Lo Sir專訪（上）債息高企，納指新高？油價與美金去向，非美黃金受壓","2026-10"],
+["b90kkYls54c","w","《財富QA｜快問快答》Q185 甲骨文ORCL Project Jupiter延期，債券降級，還可加倉嗎？","2026-10"],
+["cTMDJP61SvU","w","榕樹頭講股 Bitcoin再突破8萬？SEC CFTC「創新豁免」，認識加密投資選擇","2026-10"],
+["4CTz-Qm3rH8","w","川普再臨61 Kevin Warsh露一手！加息後股債反而穩住／拆解聯儲局新風格","2026-10"],
+["7Ilpc41I2AA","w","《Open KC EP27》聯儲局再加息市場反而升？通脹恐逼息口見6厘｜港匯轉弱、港樓壓力拆解（羅家聰博士 X Calvin）","2026-09"],
+["gfeOpgqZERc","w","川普再臨60 Bessent出手！美債回購加碼／十年債息逼近4.9%，財政部點樣壓長債？","2026-09"],
+["NsPRTpAjpoo","w","川普再臨59 Bessent：「I'm the House Now」美國親自落場壓債息／美債市場仲有自由市場？","2026-09"],
+["SJsGO73ftbE","w","經濟KFC EP79｜香港正全面走向人民幣化？林行止23年前已預警香港金融中心變質","2026-09"],
+["br_XcVT6liI","w","香港推人民幣「日常使用」，下一步會唔會連出糧都用人民幣？｜笑談中國經濟 EP163","2026-09"],
+["0D7DR_UW36w","w","《加密BB班》12萬回落一半後的Bitcoin，Clarity與Genius Act的影響，代幣化前景（嘉賓：鍾駿 佛爺）","2026-09"],
+["3kQn0LO3Nq4","w","川普再臨58 聯儲局主席Kevin Warsh Jackson Hole發言，真的放鷹？解讀債息變化","2026-09"],
+["f50dO4_4pZo","w","經濟KFC EP78｜港元突然傳改革，係放風定補鑊？港元不再只掛美元？加入人民幣、黃金之後，你手上港幣可能變成乜？","2026-09"],
+["CeQYK0yyISo","w","《Open KC EP26》拋售美債，重創美國？拆解30年債息與黃金狂升（羅家聰博士 X Calvin）","2026-09"],
+["TE22GbOGWOU","w","【精華】下一隻Palantir？新興行業應否投資？火箭與太空衛星通訊概念股｜《財富BB班補給》EP.95","2026-08"],
+["Twf-8gACXhM","w","保護資產，由VPN開始｜NordVPN優惠碼 ccstudio","2026-08"],
+["KJYMqOHLrgo","w","愈有技術愈難離境？中國出境新規或逼走高端人才｜笑談中國經濟 EP157","2026-08"],
+["NbN7WN7sJFw","w","中國新版出境管制正式收網｜有錢、有香港身份、有海外資產，都未必走得甩？｜笑談中國經濟 EP157","2026-08"],
+["YPxIwLoIi70","w","【精華】幾時應該止蝕？用實戰例子同大家講解！要睇一關鍵因素｜《財富BB班補給》EP.30","2026-08"],
+["dcrLpLUAh_E","w","【精華】成手蟹貨！點樣接受到自己投資失利心態？｜《財富BB班補給》EP.55","2026-08"],
+["E9xf2e1foBE","w","《Open KC EP25》中東戰火＋高息夾擊：今次跌市千祈唔好亂撈？香港樓市真係見底？","2026-08"],
+["pQgp2fkS9SA","w","富途老虎只是第一步？北京再追離岸信託海外收入｜笑談中國經濟 EP156","2026-08"],
+["LT90GHq0Y6o","w","【精華】拆解「品浩」基金為何如此高增長！股息如何來？風險如何？息率合理嗎？｜《財富BB班補給》EP.94","2026-08"],
+["m_jaTuA0jvI","w","【精華】最強收息基金？拆解基金資產構成！跌市下應點算？｜《財富BB班補給》EP.94","2026-08"],
+["nW8Q-PyOPwA","w","【精華】大跌市應該入市嗎？2026如有資金應點部署？｜《財富BB班補給》EP.32","2026-08"],
+["P4AhYx2m_Lg","w","【精華】投資必學－決定換馬／減持？｜《財富BB班補給》EP.57","2026-08"],
+["IGlW0_8zEi4","w","【精華】買乜跌乜！亂世下有何投資策略？有何高通脹低風險資產？｜《財富論壇》EP.1","2026-08"],
+["tyZM-zYUNnM","w","瑞銀財富榜：香港人均500萬身家贏新加坡｜百萬資產港人五分一大灣區兩地居住｜笑談中國經濟 EP154","2026-07"],
+["QiVKzIDYyGA","w","【精華】移民英國必睇！如何選擇美債及免稅工具？｜《財富BB班補給》EP.87","2026-07"],
+["XInwcfwgsb0","w","武漢眾邦銀行遭接管｜中國金融風險蔓延，香港樓都被凍結？｜笑談中國經濟 EP153","2026-07"],
+["Eqb39dBfbJI","w","【精華】如何建構投資組合減低風險？選擇跑贏大市個股難度高？｜《財富BB班補給》EP.83","2026-07"],
+["TGsnP_fns-g","w","前海私募被罰6000萬！跨境TRS突暫停，中國資金出路又收窄？｜笑談中國經濟 EP152","2026-07"],
+["p4sMd0-cjUw","w","【精華】點樣決定買唔買得過？投資者回報率準則大公開！｜《財富BB班補給》EP.83","2026-07"],
+["gNdJruJzeB8","w","《財富BB班-PYM 避險逃生門》現已上線！","2026-07"],
+["TA3NKsL0cGQ","w","【精華】AI數據中心大噴發？Data Centre REIT值得持有嗎？｜《財富BB班補給》EP.77","2026-07"],
+["EZoPnWn7DnY","w","大陸居民定義超闊！183日＋香港ID都可能中招，ODI新規衝擊香港財富管理｜笑談中國經濟 EP150","2026-06"],
+["5bGOdjHSRCA","w","香港金融中心變北水提款機？北水背後其實係走錢潮｜笑談中國經濟 EP150","2026-06"],
+["4p7QitNThSA","w","【精華】全力聚焦軍工！日本第一隻純軍工ETF？｜《財富BB班補給》EP.93","2026-06"],
+["dNf8Qb7VRnk","w","彭博揭中國走資近兩個香港GDP！富途老虎風波只是開始？｜笑談中國經濟 EP149","2026-06"],
+["2PhgYmDTlKM","w","【嘉賓精華】黃金白銀無明確方向點部署？戰局後對市況有何影響？｜《專訪Lo Sir》","2026-06"],
+["N2a51UEpgtk","w","【嘉賓精華】分析美股後市，低迷時該大力入手？｜《專訪Lo Sir》","2026-06"],
+["LHa_OsSU7EA","w","專訪Dr Ng（上）：環球債市好擔心，除了美債／債息區間，減變加息的市場反應","2026-06"],
+["Rz0DhgCEiKM","w","《Open KC EP23》樓市爆煲未完？中國走資、地方債、港股沽壓一次講清","2026-06"],
+["w8BTEvhqlKU","w","香港仲係避風港？金管局出手查資金來源，港股北水會唔會斷流｜笑談中國經濟 EP148","2026-06"],
+["qVMxvLcqJSQ","w","中國閂水喉！富途老虎被罰，境內資金出海路線被盯上｜笑談中國經濟 EP148","2026-06"],
+["KaKdWPZiBJg","w","【精華】續談軍工ETF！為何買入日本軍工等於手持美國軍工？｜《財富BB班補給》EP.91","2026-06"],
+["fVStFeLaKNY","w","【精華】軍工ETF大爆發！美日專精領域有何不同？｜《財富BB班補給》EP.89","2026-06"],
+["7AIrvAE44WI","w","【精華】資金為何大幅流入日韓台？除了台積電台股有何選擇？｜《財富BB班補給》EP.90","2026-05"],
+["Db2OGEf8vtQ","w","經濟KFC EP70｜李嘉誠大舉減持、巴菲特狂囤現金，兩大投資巨人等緊乜？","2026-05"],
+["AWezGgrBzZ0","w","穩定幣係救命草定計時炸彈？香港金融中心恐成下一個制裁目標｜笑談中國經濟 EP145","2026-05"],
+["6p3mYrrpf2o","w","Vin化爐信箱EP44 今年減息可能性／JNJ業績","2026-05"],
+["b_piuA6vNR0","w","【精華】日韓股市爆升與AI有關？細數多板塊十大領頭股！｜《財富BB班補給》EP.90","2026-05"],
+["FGSK5JAk8BQ","w","【精華】公開十年NI數據！股息及除淨日如何看？｜《財富BB班補給》EP.78","2026-05"],
+["HcVj83iHNV4","w","《榕樹頭講股》台股歷史性衝破4萬點！地緣政治、金融戰、資金流向與投資工具全面解析","2026-05"],
+["Fow2aExm9L8","w","【精華】購買債券單位拆解！債息該如何選擇？｜《財富BB班補給》EP.74","2026-05"],
+["OjxDsUNQp5c","w","《榕樹頭講股》滙控渣打「不知情下」涉伊朗洗錢活動？二級制裁與金融戰","2026-05"],
+["j6mQfUUyfck","w","【精華】亞太股市創新高！如何開始投資日韓台股？｜《財富BB班補給》EP.90","2026-05"],
+["9wdHnux2Eho","w","美國突查滙豐渣打助伊朗走資｜金融戰正式開打｜港股美股點部署？｜笑談中國經濟 EP142","2026-05"],
+["z6WhvR5iELQ","w","【精華】連咖啡都可以投資？輕資產投資版塊分析！｜《財富BB班補給》EP.67","2026-05"],
+["Oxw9AoSy67s","w","【精華】Yield債券如何選？Ask Yield同Bid Yield計算方式公開！｜《財富BB班補給》EP.20","2026-04"],
+["1ZsQRxb1h1s","w","【精華】投資組合應如何分配？幾時寧願揸S&P都唔要個股？｜《財富BB班補給》EP.83","2026-04"],
+["YFHnFP9vFJA","w","【精華】平均回報率如何計算？投資風險最低化都可以跑贏大市？｜《財富BB班補給》EP.83","2026-04"],
+["WqW4xuV5wM8","w","解構香港保險業走資模式，疫後保費新高的走資潮｜笑談中國經濟 EP140","2026-04"],
+["HPPjzIhAMvg","w","【精華】債息及Accrued Interest入門班！應計利息如何計算？｜《財富BB班補給》EP.41","2026-04"],
+["lo71REN8qss","w","《榕樹頭講股》Circle Coinbase齊齊大跌？《Clarity》最新草案如何影響穩定幣","2026-04"],
+["vCFo3P-BRLI","w","美元荒？Dr Ng分析銀行搶客情況！私人信貸Private Credit爆破風險與騙局？（專訪Dr Ng精華）","2026-04"],
+["mUsTadciPW0","w","【精華】月供與Rebalance幾時決定？亂世下的投資心法！｜《財富BB班補給》EP.59","2026-04"],
+["pF7n5eUwrWk","w","【精華】投資最緊要睇嘅指標！哪些股票最具市場流通性？｜《財富BB班補給》EP.86","2026-04"],
+["-LidXw-w2UY","w","【精華】投資穩賺不賠大法？套息交易如何操作及有何風險？｜《財富BB班補給》EP.85","2026-04"],
+["h4wpNfY40NM","w","【精華】分析師都在看的利潤指標！EBITDA計算準則｜《財富BB班補給》EP.84","2026-03"],
+["_8yZL3Sl3Q8","w","【精華】量化緊縮(QT)是甚麼？如何影響金融市場？｜《財富BB班補給》EP.84","2026-03"],
+["atCZfCTjj0w","w","《榕樹頭講股》滙豐客戶稱20萬存款不翼而飛？！","2026-03"],
+["_TqVfeELIas","w","《專訪Lo Sir》戰局下必有一現象，油與黃金的背馳？（足本在財富BB Club Patreon）","2026-03"],
+["qxsYI8CZZzo","w","油價衝破100美元！伊朗戰局第10日，金融市場開始出現三個現象","2026-03"],
+["Wt_q-j54Nnk","w","【精華】S&P 500 Momentum ETF（SPMO）穩賺之選？｜《財富BB班補給》EP.81","2026-03"],
+["779MYglB7vA","w","經濟KFC EP65｜戰爭真的能賺錢？伊朗戰局下的「戰爭財」投資邏輯｜軍工股、油價與市場情緒","2026-03"],
+["P8Wwzeo3rCY","w","美財政部點名：香港佔伊朗黑錢入帳49%全球最高｜陳茂波「避險論」背後的真相｜笑談中國經濟 EP135","2026-03"],
+["pv4TH6lJmOM","w","【精華】退休後有閒置資金該如何部署？低風險增值無難度！｜《財富BB班補給》EP.16","2026-03"],
+["yeTIHCk6Q1w","w","【精華】投資級企業債現瘋潮！如何找到獨角獸？｜《財富BB班補給》EP.16","2026-03"],
+["dDmb7R4GF8o","w","【精華】炒波幅輸多贏少？新手想試應考慮因素！｜《財富BB班補給》EP.16","2026-03"],
+["VBOTC6phpdo","w","【精華】AI股大崩盤？2026除科技外有何潛力類別？｜《財富BB班補給》EP.41","2026-03"],
+["ry5W2xMY7Dk","w","【Q&A精華】長線純利增長之參考數據，Program Trade都贏唔到？｜《財富BB班補給》EP.79","2026-02"],
+["2cm2Zy_sEQk","w","【精華】買ETF應用何貨幣？Option策略ETF如何選擇？｜《財富BB班補給》EP.75","2026-02"],
+["clhSB1wihq4","w","連持有虛擬貨幣也要抓？中國開始跨國追稅｜笑談中國經濟 EP132","2026-02"],
+["BCxsAXwkkBA","w","【精華】網友購買債券單位，債息如何選擇？｜《財富BB班補給》EP.74","2026-02"],
+["1TPMapkSlbg","w","【精華】美國網友提問！401k與退休基金如何配置？｜《財富BB班補給》EP.73","2026-02"],
+["0roeRuNnAQA","w","【精華】減息下的大環境，房地產概念 REIT（RKT）如何運作？｜《財富BB班補給》EP.77","2026-02"],
+["9maWnyI5NN8","w","【精華】中美脫鈎背景下，減息與長債息的關係？｜《財富BB班補給》EP.76","2026-02"],
+["R3y24vIsJjs","w","金銀大洗倉，因為聯儲局新主席Kevin Warsh？真的去美元化，美元資產又如何","2026-02"],
+["a1iBB6KW2II","w","【精華】港股已死？中美持續拉鋸人民幣前景如何？｜嘉賓：Lo Sir｜《財富BB班補給》EP.69","2026-02"],
+["L03BEjDAMQs","w","【精華】加密貨幣跌回原形！長遠對發展持何態度？｜嘉賓：Lo Sir｜《財富BB班補給》EP.69","2026-02"],
+["n60LW5M414A","w","【精華】詳細分析網友投資組合！綜合ETF表現最好？｜《財富BB班補給》EP.66","2026-02"],
+["DwEeCAN6r94","w","【精華】詳細分析TLTW 20年期美債ETF！股息竟可高達...？｜《財富BB班補給》EP.65","2026-02"],
+["5aFAfeFieJo","w","【精華】美金越來越強有何對策？香港人資金應如何部署？｜《財富BB班補給》EP.58","2026-02"],
+["gAtXsU-3iVU","w","【精華】投資必學101！何時該決定換馬／減持？｜《財富BB班補給》EP.57","2026-02"],
+["m-LFVL6VyDM","w","【精華】計算債券總回報！係咪唔應該買現價超過$100嘅債？｜《財富BB班補給》EP.56","2026-02"],
+["lyZEDf_D1O8","w","《財富BB班-2026投資年冊》新一年投資策略及資產部署","2026-01"],
+["m1U38oPEHYo","w","【精華】自住樓穩賺投資？投資組合如何分配？｜《財富BB班補給》EP.52","2026-01"],
+["Zc9E2Fw2C68","w","【精華】石油危機引發滯脹？美國有何應對策略？｜《財富BB班補給》EP.51","2026-01"],
+["T6OK3F_ZU8Y","w","【精華】第一筆啟動資金如何部署？入門心態如何調整？｜《財富BB班補給》EP.26","2026-01"],
+["U1goFhX_wCA","w","【精華】經濟衰退下新手如何部署？｜《財富BB班補給》EP.34","2026-01"],
+["Mz-J9S5icKk","w","【精華】見到波幅心思思點算好？高賣低買無捷徑！｜《財富BB班補給》EP.16","2026-01"],
+["Yv29OaHJV4M","w","【精華】如何決定應否月供？分析2026月供策略！｜《財富BB班補給》EP.24","2026-01"],
+["XFiQlaJvb98","w","【精華】專訪Lo Sir跌市部署！大跌市必須注意的兩點與期權危機？｜《財富BB班補給》EP.33","2026-01"],
+["s2vwWFaRNys","w","【精華】大跌市投資手冊！2026如有銀彈應否入市？｜《財富BB班補給》EP.32","2026-01"],
+["LqBebm1Md40","w","【精華】滯脹史上最大危機？拆解經濟增長與通脹關係！｜《財富BB班補給》EP.51","2026-01"],
+["Jmivnig_mfM","w","專訪Dr Ng（1/3）：日本加息過後，日美長債息大幅收窄！套息交易變「內套」","2026-01"],
+["0tckYIW9f3E","w","【精華】2026日本歸位！日經創新高有何歷史意義？｜《財富BB班補給》EP.80","2026-01"],
+["rIvsrrM4qSA","w","【嘉賓精華】專家推薦的全天候投資配置！債券與股票配搭不應超的界線？｜《財富論壇》EP.6","2025-12"],
+["Z0C4pVO7F9s","w","【精華】網友的神操作！BYND跌到破產都可反勝？為何不建議仿傚？｜《財富BB班補給》EP.82","2025-12"],
+["mxy4noQGZvU","w","《揀股BB班》EP12 Club友投資組合建議（上）目標與預期回報，Fixed Income債息組合？","2025-12"],
+["3ElVQURglaM","w","《揀股BB班》EP13 Club友投資組合建議（下）分析3款股，為何槓桿常輸凸？","2025-12"],
+["KXmq4iTEgBk","w","《揀股BB班》EP5 大跌市點部署？如何知道是否入股好壞時機？","2025-11"],
+["Myo2KTUIA8Q","w","【精華】高息年代還看美債！IB買債原來無想像中複雜！教你逐一睇美債債價同債息！｜《財富BB班補給》EP.64","2025-11"],
+["62ujcn9GLdk","w","【精華】最佳避險資產－黃金！中長線尚樂觀？主要看一關鍵因素！｜《財富BB班補給》EP.67","2025-11"],
+["dxg2Su5ggE4","w","《揀股BB班》EP3 高息美股ETF如何選？Yield竟可高達XX%？","2025-11"],
+["b-wrTUK_0d8","w","【精華】想下半世財自？學識7個重點檢查自己財政穩健度！｜《財富閒談》","2025-11"],
+["OZyY19bH74w","w","經濟KFC EP56｜黃金熱潮與美元秩序：去美元化是一場集體幻覺？","2025-11"],
+["2K2R5jYuZyg","w","【精華】首創魚菜共生投資大法，5-3-2資產分佈教你防守同時高收益！｜《財富BB班補給》EP.80","2025"],
+["1ZsoayYO1mE","w","【Q&A精華】美股暴跌唔洗驚？5分鐘同你釐清基本概念！｜《財富BB班補給》EP.79","2025"],
+["tRK3XoqDkQs","w","Vin化爐信箱EP41 美股台股日股點揀？答網友匯率風險提問","2025"],
+["rXXfEW0l3w0","w","【Q&A精華】儲蓄的錢應該用來買債嗎？何謂All Weather Portfolio？｜《財富BB班補給》EP.74","2025"],
+["XPQ736h3nNc","w","【Q&A精華】美元地位與風險－巴菲特持樂觀態度？分析Club友投資組合｜《財富BB班補給》EP.73","2025"],
+["6guy6pAtVTU","w","【Q&A精華】分析Club友投資組合－投資第一步必需制定投資金流！｜《財富BB班補給》EP.72","2025"],
+["Pw14PsVukgE","w","【嘉賓精華】投資者的兩大動機決定債券年期？日債前景視乎美國？｜嘉賓：Lo Sir","2025"],
+["DfVsAO67sSY","w","【Q&A精華】2025投資必須承受高風險？分析股票資產分配策略！｜《財富BB班補給》EP.70","2025"],
+["f2y47CPTNms","w","【嘉賓精華】一不留神全軍覆沒！如何應對加密貨幣平台風險？｜嘉賓：鍾駿","2025"],
+["cYIGyXxxJr4","w","經濟KFC EP49｜錢用唔晒有冇用？談《Die With Zero》與華人理財哲學","2025"],
+["duln8_JbBeI","w","【Q&A精華】13分鐘同你解釋商品期貨！實際操作危唔危險？｜《財富BB班補給》EP.35","2025"],
+["x8FadNEBVe8","w","【Q&A精華】人到中年想避險！保險帳戶資產該如何分配？｜《財富BB班補給》EP.40","2025"],
+["16VvDPptGHA","w","經濟KFC EP47｜人民幣穩定幣對港元地位的衝擊，支付系統、監管架構與資產安全的潛在風險","2025"],
+["ArBcfIZiTDk","w","經濟KFC EP48｜劣幣驅逐良幣？從香港穩定幣計劃睇虛擬金融亂局","2025"],
+["YZQKEP4q2-E","w","《Open KC EP7》黃金打敗歐元！比特幣會成為央行儲備？港匯踩界、息差危機、樓市警號？","2025"],
+["DwQdOCoax8M","w","【Q&A精華】ETF選擇全攻略－Calvin八隻心水全方位版塊分析｜《財富BB班補給》EP.2","2025"],
+["wjDA5qGoZr0","w","【Q&A精華】每個投資者必犯錯誤！如何處理股票蟹貨？｜《財富BB班補給》EP.55","2025"],
+["_zBKDhmiMpw","w","【精華】止蝕or不止蝕，要睇一關鍵要素？實戰示範止蝕價位如何選擇！｜《財富BB班補給》EP.30","2025"],
+["iWoHBU03dko","w","【Q&A精華】如何啟動投資及入手資金？新手應入市ETF或債券？｜《財富BB班補給》EP.26","2025"],
+["JWIehsxie2w","w","【精華】如何看國家印幾多銀紙？印鈔過量結果是...？｜《財富BB班補給》EP.54","2025"],
+["fkoL-g8HO7o","w","【Q&A精華】平穩增長當儲錢開始月供？NVDA／TSM／QQQ係好選擇？｜《財富BB班補給》EP.49","2025"],
+["X93vtcNtriM","w","【精華】亂世下的資金何去？2025五十資產分配黃金定律！｜《財富BB班補給》EP.1","2025"],
+["b3pkabALWos","w","【Q&A精華】港元弱勢沽空成大勢？分析聯繫匯率脫鈎風險！｜《財富BB班補給》EP.60","2025"],
+["u-S-KFtpzKg","w","【精華】擔心聯繫匯率 不如關心一件事！｜《財富BB班補給》Q&A EP.60","2025"],
+["RBSTq5IwxDI","w","【精華】美金愈強，身處其他國家如何？再談香港聯繫匯率與SWIFT的問題｜《財富BB班補給》EP.59","2025"],
+["u2WPfpe2SA4","w","【精華】如何將資產所在風險降至最低？離岸戶口係唯一出路！｜《財富BB班補給》EP.3","2025"],
+["0QS_CMRaWGQ","w","【嘉賓精華】大跌市下有何債券部署？購買長短債要考慮甚麼？｜嘉賓：Dr. Ng","2025"],
+["sM6_4LVCiJ8","w","【嘉賓精華】新手慎選？最高風險永續債｜嘉賓：Dr. Ng","2025"],
+["G-dfnYq5Cvo","w","【Q&A精華】買樓是否投資組合一部份？自住樓唔怕跌？｜《財富BB班補給》EP.52","2025"],
+["sim6nLTdBEM","w","【精華】亂世下的投資策略！特朗普年代高通脹低風險資產？｜《財富論壇》EP.1","2025"],
+["adJIFN40YDg","w","【精華】投資平台如何選擇？｜《財富BB班補給》Q&A EP.61","2025"],
+["aDoIMIB-IYk","w","【精華】納指跌一千點有何部署？收息股該如何選擇？｜《財富BB班補給》EP.62","2025"],
+["zrAwN5UCRoM","w","【精華】何謂股票合理價格？即學股票比較練習｜《財富BB班補給》Q&A EP.63","2025"],
+["Yn0VZPfh2Is","w","【精華】沒有時間，如何投資？投資新手初學錯誤！｜《財富BB班補給》EP.58","2025"],
+["Q49T-idMIBk","w","【精華】2025投資策略，資產，外匯，商品配置｜《財富BB班補給》EP.53","2025"],
+["ly9jFMUOGR8","w","債券BB班全攻略：Dr. Ng 專訪 + Calvin 入門課程｜從零開始學債券","2025"],
+["IMN4MCZwO3s","w","【精華】Option期權入門：Call & Put，行使價到期日期權金，Premium合理價｜《財富BB班補給》017","2025"],
+["HT0Onle_uWY","w","【精華】極高風險資產！加密貨幣如何購買？Bitcoin相關股票有甚麼？｜《財富BB班補給》EP.6","2025"],
+["DYKHxSDCpCg","w","【精華】必學長短債入門基礎，美金定期｜《財富BB班補給》010","2025"],
+["NhDjhqVZqrk","w","【精華】2025資產配置攻略！賣樓後資金第一步要離岸？低風險高回報投資方式？｜《財富BB班補給》EP.25","2025"],
+["suq9D1aqPC8","w","【精華】買ETF的黃金定律！若不達一標準可直接撤資？兩種ETF有何不同？｜《財富BB班補給》EP.9","2025"],
+["RHuUIrUgIGU","w","【精華】可能係最重要的投資堂！幾時要止蝕離場？投資與投機止蝕兩大原則｜《財富BB班補給》EP.28","2025"],
+["tmpUoLo2wKA","w","BB班公開Q&A EP20 債息 & Accrued Interest／YTM／處理MPF嘅投資","2025"],
+["bkAcBRMKowk","w","財富BB班 Q&A EP13 保證金／月供日股／Offshore banks，Brokerages，Tax","2025"],
+["tVqba_wv84I","w","財富BB班 Q&A EP10 軍工ETF，Manage your own money，Dell，離岸戶口","2025"],
+["nk-xF4Xkdmw","w","財富BB班 Q&A EP9 月供好不好？如何決定月供與否，月供特點與投資邏輯","2025"],
+["__cDc-rqrS8","w","BB班公開Q&A EP26 如何看國家印幾多銀紙／黃金儲備／Crypto平台／再談在地資產風險","2025"],
+["xl6mwMp3qvg","w","BB班公開Q&A EP25 買樓與否，自住樓是否投資組合一部份？","2025"],
+["dhTbcDFObHw","w","Vin化爐信箱EP2 網友QA：C3 AI，UTEN國債ETF，SQ，MPF","2024"],
+["r71d8WUhwnE","w","財富BB班 Q&A EP1 Robinhood，會否賣長債，如何看債券資料，應否用流動資金「早供樓」","2024"],
+["QNQgtNP9BBQ","n","茶百道 IPO 爆風波！遭香港證監會停牌，背後揭示甚麼風險？｜PYM 避險逃生門 Ep16","2026-10"],
+["Gj8HTmLzJ08","n","（Patreon節錄）應對FOMO，明星股熱潮，建立Portfolio分享","2026-10"],
+["DNicmZht79U","n","《PYM快訊》再談投資儲蓄相連保單｜保單陷阱｜提早退保｜供款年期","2026-10"],
+["0KX3TFsbPhU","n","《PYM快訊》資產三風險解讀：金融、內房、AI半導體齊亮燈，普通人帳戶該如何重新佈局？｜跨國追稅","2026-10"],
+["Bkypa29r4cY","n","《PYM快訊》70歲夫婦畢生積蓄被掏空！誤信銀行買312萬保險？","2026-09"],
+["HkJHVv2Uhas","n","（Patreon節錄）《PYM 避險逃生門》02 價格波動不是「風險」，八大風險點逐樣數，流動性與平台風險，第一步行動","2026-09"],
+["pCOLxgxLe1g","n","施政報告後樓市急凍！「呼吸Plan」恐變香港次按？學生宿舍成走資新渠道？《1點新聞X珍Talk》EP57","2026-09"],
+["_rWNwOMKuP4","n","（Patreon節錄）投資美股新手推介：VOO可買？與QQQ、SPMO分別，月供策略，最重要的2個心態","2026-09"],
+["pItccOyH0BQ","n","（Patreon節錄）《避險逃生門》01 中國打擊跨境資金的前因後果／資產所在風險","2026-09"],
+["H0Hx7j0HFqU","n","（Patreon節錄）地產商「集資發展」騙案／苦主股東的絕望／再談資產與平台風險","2026-09"],
+["IuUcQY8s-6E","n","移民攞唔返MPF點部署？至少唔好再將退休金押落中港股市！【日不落香港EP16-1】","2026-09"],
+["VlWDJbXuiU4","n","PYM突發：香港保險股大跌！傳中國對境外保單收益扣20％稅！","2026-08"],
+["AGY_nPYJYj8","n","中共跨境資金境外保單全面徵稅20%，滙豐保誠股價應聲急跌！｜拉闊世界精華","2026-08"],
+["0QJnkPBP9Sw","n","（Patreon節錄）吳教授的三層投資法，比定期買股更適合？倉位與現金流的檢討","2026-08"],
+["OM6bIu_LPiw","n","中國追稅離岸信託 富豪資產還安全嗎？《1點新聞X珍Talk》EP50","2026-08"],
+["CBGFG-PZd1A","n","中國經濟倒退30年？香港樓市拐點已現，資產安全警號響起《1點新聞X珍Talk》EP45","2026-07"],
+["YyXTpXzwpUA","n","（Patreon節錄）亞洲股市大跌！港股過千點，接刀定加倉？「避險」資產","2026-07"],
+["EoH5-y2_Va4","n","資金大逃亡！港股成棄子？日韓台股創新高｜滙豐也不安全 爆香港戶口凍結實例《1點新聞X珍Talk》EP42","2026-06"],
+["SBDD--i069U","n","（Patreon節錄）資產及倉位配置之難，大升股票何其多，那隻才最適合我","2026-06"],
+["f3bMWDLEg48","n","（Patreon節錄）人民幣破七！究竟係升值定貶值，還看十月資產大變動","2026-05"],
+["EOadikKO1hs","n","（Patreon節錄）甚麼是ETF？ETF種類，為何ETF愈來愈流行，使用ETF投資","2026-01"],
+["gjjjc90OCqU","n","（Patreon節錄）化解你的時間焦慮：投資上的認知扭曲，面對不逃避","2026-03"],
+["cCAJODyavI4","n","（Patreon節錄）減息一定經濟差？為何美金不跌，拆解美國經濟政策之轉變","2026-02"]
+];
+// Patreon programmes (from YouTube descriptions of members-only content)
+const P=[
+ {site:"PYM 避險逃生門",url:"https://www.patreon.com/collection/2211660",name:"《PYM 避險逃生門》會員完整版",desc:"跨境資金、資產所在風險、平台風險、保單同戶口安全，一步步教你部署。",kw:/避險|走資|跨境|離岸|凍結|戶口|資產所在|平台|追稅|信託|保險|保單|港元|聯匯|脫鈎|移民|PYM/},
+ {site:"財富BB Club",url:"https://www.patreon.com/wealthclub",name:"《財富BB班補給》完整版及會員 Q&A",desc:"YouTube 只係精華，完整版逐條答 Club 友問題：債券、ETF、月供、止蝕、資產配置。",kw:/債|息|ETF|月供|止蝕|蟹貨|組合|配置|分配|新手|入門|收息|退休|期權|美金|美元/i},
+ {site:"財富BB Club",url:"https://www.patreon.com/wealthclub",name:"《揀股BB班》全集",desc:"個股估值、業績分析、Club 友投資組合點評，更多集數只喺 Patreon。",kw:/股|估值|業績|美股|個股|Nvidia|NVDA|台積電|AI|科技/i},
+ {site:"財富BB Club",url:"https://www.patreon.com/wealthclub",name:"《專訪 Lo Sir》足本訪問",desc:"黃金、油價、美元同美股走勢，足本訪問喺財富BB Club。",kw:/黃金|金價|油|美元|美金|美股|白銀|戰|伊朗/},
+ {site:"CC工作室",url:"https://www.patreon.com/calvinchoy",name:"CC工作室會員節目",desc:"《財富閒談》、《金融小記》等會員獨家節目，Calvin 每週拆解市場同理財心法。",kw:/心態|FOMO|習慣|焦慮|VOO|QQQ|聯儲|減息|加息|中國|關稅|人民幣/i}
+];
+const TOPICS=[
+ {re:/港元|港幣|港紙|聯匯|聯繫匯率|脫鈎|脫鉤|港匯/},
+ {re:/債|Yield|YTM|孳息|TLT|定期/i},
+ {re:/黃金|金價|白銀|金銀/},
+ {re:/走資|跨境|離岸|凍結|戶口|資金出|追稅|ODI|大陸居民|資產所在|平台風險|出境|信託/},
+ {re:/保險|保單|儲蓄相連|退保/},
+ {re:/加密|Bitcoin|BTC|比特|以太|穩定幣|Crypto|虛擬/i},
+ {re:/ETF|VOO|QQQ|SPMO/i},
+ {re:/月供|新手|入門|啟動資金|第一筆|開始投資/},
+ {re:/止蝕|蟹貨|心態|FOMO|換馬|減持|輸錢/i},
+ {re:/收息|股息|派息|高息|除淨/},
+ {re:/退休|MPF|強積金|401k/i},
+ {re:/樓|按揭|物業|REIT|供樓/i},
+ {re:/移民|BNO|回流/i},
+ {re:/美股|納指|Nvidia|NVDA|AI股|科技股|S&P|標普/i},
+ {re:/日股|日本|日經|台股|韓國|日韓台/},
+ {re:/聯儲|Fed|加息|減息|Warsh|息口/i},
+ {re:/美元|美金|去美元化|匯率/},
+ {re:/油價|伊朗|戰爭|戰局|霍爾木茲|地緣|軍工/},
+ {re:/港股|A股|北水|內房/},
+ {re:/期權|Option|期貨/i},
+ {re:/資產配置|資產分配|投資組合|組合|部署|分散|Portfolio/i},
+ {re:/通脹|滯脹|衰退|通縮|印鈔|印銀紙/},
+ {re:/避險|保護資產|資產安全|風險/},
+ {re:/人民幣/},
+ {re:/銀行|存款/}
+];
+const STOP=new Set("如何 點樣 應該 可以 什麼 甚麼 咩事 點解 一個 我的 我嘅 而家 現在 係咪 有冇 好唔 唔好 值唔 唔值 得唔 唔得 嗎？ 呢？ 會唔 唔會 應唔 唔應 怎樣 怎麼 是否 還是 定係 手上 我手 自己".split(" "));
+const EDU=/補給|Q&A|QA|揀股|PYM|避險逃生門|入門|信箱|精華|快問快答/;
+
+function grams(s){const out=new Set();const t=s.replace(/[^一-鿿A-Za-z0-9]+/g," ");
+  for(const w of t.split(" ")){if(!w)continue;
+    if(/^[A-Za-z0-9]+$/.test(w)){if(w.length>1)out.add(w.toLowerCase());continue}
+    const cjk=w.replace(/[A-Za-z0-9]/g,"");for(let i=0;i<cjk.length-1;i++)out.add(cjk.slice(i,i+2));
+    (w.match(/[A-Za-z]{2,}|\d{3,}/g)||[]).forEach(x=>out.add(x.toLowerCase()));}
+  return out}
+const IDX=V.map(v=>({id:v[0],ch:v[1],t:v[2],d:v[3],g:grams(v[2]),tp:TOPICS.map(x=>x.re.test(v[2]))}));
+
+function search(q){
+  const qt=TOPICS.map(x=>x.re.test(q)); const qg=[...grams(q)].filter(g=>!STOP.has(g));
+  const res=IDX.map(v=>{let s=0,topical=0;
+    qt.forEach((on,i)=>{if(on&&v.tp[i]){s+=6;topical++}});
+    let o=0;qg.forEach(g=>{if(v.g.has(g))o++});s+=Math.min(o,6);
+    if(EDU.test(v.t))s+=1.5;
+    if(v.d.startsWith("2026"))s+=1;else if(v.d.startsWith("2025-1"))s+=.5;
+    return {...v,s,topical,o}}).sort((a,b)=>b.s-a.s);
+  const best=res[0];
+  const hit=best&&(best.topical>=1&&best.s>=8||best.o>=4);
+  const pt=P.map(p=>({...p,s:(p.kw.test(q)?3:0)+res.slice(0,5).filter(r=>p.kw.test(r.t)).length})).sort((a,b)=>b.s-a.s)[0];
+  return {list:res.filter(r=>r.s>=6).slice(0,25),hit,pt};
+}
+
+const PRESET=["港元會唔會脫鈎？我手上嘅港幣應該點避險？","香港銀行戶口會唔會被凍結？資產應該擺邊？","而家買美債定做定期好？","黃金仲追唔追得？","新手第一筆錢，應該買 ETF 定月供？","中國追稅、離岸信託仲安全嗎？","儲蓄保險、保單有咩陷阱要小心？","移民之後 MPF 應該點處理？","股票蟹貨，幾時應該止蝕？","Bitcoin 同穩定幣值唔值得放少少？"];
+const $=s=>document.querySelector(s);
+let used=0,busy=false,sample=null,asked=new Set();
+try{used=+sessionStorage.getItem("qa_used")||0}catch(e){}
+$("#used").textContent=used;
+
+const chips=$("#chips");
+PRESET.forEach(p=>{const b=document.createElement("button");b.className="chip";b.textContent=p;b.onclick=()=>{$("#qbox").value=p;ask()};chips.appendChild(b)});
+$("#askBtn").onclick=ask;
+$("#qbox").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();ask()}});
+
+(async()=>{try{if(window.claude?.use){sample=await window.claude.use("sample")}}catch(e){sample=null}
+  $("#mode").textContent=sample?"AI 配對已開啟":"";})();
+
+function el(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
+function ytUrl(id){return "https://www.youtube.com/watch?v="+id}
+
+function vidRow(v,why){
+  const a=el("a","vid");a.href=ytUrl(v.id);a.target="_blank";a.rel="noopener";
+  a.append(el("span","tag yt","YOUTUBE"),el("span","vt",v.t));
+  const s=el("span","vs");s.innerHTML="";s.append(document.createTextNode(YT[v.ch].name+" · "+v.d));
+  if(why){s.append(document.createTextNode(" · "));s.append(el("em",null,why))}
+  a.append(s);return a}
+
+function patreonCard(p){
+  const box=el("div","patreon");const d=el("div");
+  d.append(el("h3",null,"想睇完整版？"+p.name),el("p",null,p.desc+"（"+p.site+" Patreon）"));
+  const a=el("a","btn solid","去 Patreon 睇 "+p.site);a.href=p.url;a.target="_blank";a.rel="noopener";
+  box.append(d,a);return box}
+
+function missCard(q,why){
+  const box=el("div","miss");
+  box.append(el("h3",null,why||"呢條問題暫時未有節目講過"));
+  box.append(el("p",null,"將問題交俾 Calvin，佢會考慮喺之後嘅節目答你。撳「寄問題俾 Calvin」會開啟你嘅電郵程式；或者複製問題寄去："));
+  const addr=el("span","addr",EMAIL);
+  const row=el("div","row");
+  const cp=el("button","ghost","複製問題");
+  cp.onclick=async()=>{const text="【網友問題】"+q;try{await navigator.clipboard.writeText(text);cp.textContent="已複製"}catch(e){cp.textContent="請手動複製：「"+q+"」"}};
+  const ce=el("button","ghost","複製電郵地址");
+  ce.onclick=async()=>{try{await navigator.clipboard.writeText(EMAIL);ce.textContent="已複製"}catch(e){ce.textContent=EMAIL}};
+  const m=el("a","btn solid","寄問題俾 Calvin");m.href="mailto:"+EMAIL+"?subject="+encodeURIComponent("財富BB班 網友提問")+"&body="+encodeURIComponent(q);
+  row.append(m,cp,ce);
+  box.append(addr,row);
+  const sub=el("p",null,"同時記得訂閱 YouTube，新一集出咗就第一時間收到通知。");
+  box.append(sub);return box}
+
+async function ask(){
+  const q=$("#qbox").value.trim(); if(!q||busy)return;
+  if(used>=LIMIT){alertBox("今次已經問咗 10 條。睇完推介嘅節目，之後再嚟問啦！");return}
+  busy=true;$("#askBtn").disabled=true;
+  used++;try{sessionStorage.setItem("qa_used",used)}catch(e){}
+  $("#used").textContent=used;
+  [...chips.children].forEach(c=>{if(c.textContent===q)c.classList.add("done")});
+  $("#empty")?.remove();
+  const r=search(q);
+  const entry=el("article","entry");
+  entry.append(el("span","qno","問題 "+String(used).padStart(2,"0")+" / "+LIMIT),el("h2","q",q));
+  const say=el("p","say");entry.append(say);
+  $("#ledger").prepend(entry);
+  $("#qbox").value="";
+
+  let picks=null, reply=null, answered=r.hit;
+  if(sample&&r.list.length){
+    say.textContent="正在為你配對最啱嘅節目...";say.classList.add("thinking");
+    try{
+      const cand=r.list.map((v,i)=>i+". ["+YT[v.ch].name+" "+v.d+"] "+v.t).join("\n");
+      const out=await sample.json(
+`你係《財富BB班》主持 Calvin 嘅節目助理。網友問咗一條理財／投資／避險問題，請由以下節目清單揀出最能幫到佢嘅 1 至 3 集。
+規則：只可以揀清單入面嘅節目；唔好提供任何個人投資建議或買賣意見；用香港書面粵語，語氣親切。
+如果清單入面冇一集真正講到呢個問題，answered 設為 false，picks 留空。
+網友問題：「${q}」
+節目清單：
+${cand}
+只輸出 JSON：{"answered":true/false,"reply":"一至兩句，講點解推介呢幾集（30-60字）","picks":[{"i":編號,"why":"10-20字說明"}]}`,{modelTier:"quick"});
+      if(out&&typeof out==="object"){answered=!!out.answered;reply=out.reply||null;
+        picks=(out.picks||[]).filter(p=>Number.isInteger(p.i)&&r.list[p.i]).slice(0,3).map(p=>({v:r.list[p.i],why:p.why}))}
+    }catch(e){if(e&&e.code==="not_granted"){sample=null;$("#mode").textContent=""}}
+    say.classList.remove("thinking");
+  }
+  if(!picks||!picks.length){picks=answered?r.list.slice(0,3).map(v=>({v,why:null})):[]}
+
+  if(answered&&picks.length){
+    say.textContent=reply||"Calvin 喺呢幾集講過相關內容，建議由第一集開始睇：";
+    const box=el("div","vids");picks.forEach(p=>box.append(vidRow(p.v,p.why)));entry.append(box);
+    if(r.pt)entry.append(patreonCard(r.pt));
+    const nh=el("button","nohelp","呢幾集都答唔到我？將問題交俾 Calvin");
+    nh.onclick=()=>{nh.replaceWith(missCard(q,"將你嘅問題交俾 Calvin"))};entry.append(nh);
+  }else{
+    say.textContent=r.list.length?"暫時未搵到直接答到呢條問題嘅節目，以下幾集可能有少少關係：":"暫時未搵到直接答到呢條問題嘅節目。";
+    if(r.list.length){const box=el("div","vids");r.list.slice(0,2).forEach(v=>box.append(vidRow(v,null)));entry.append(box)}
+    entry.append(missCard(q));
+  }
+  busy=false;$("#askBtn").disabled=false;
+}
+function alertBox(msg){const e=el("div","empty",msg);$("#ledger").prepend(e)}
+</script>
+</body>
+</html>
